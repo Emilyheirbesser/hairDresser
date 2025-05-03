@@ -3,6 +3,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebaseConfig";
 import { useNavigate } from "react-router-dom";
 
+import "./loginStyles.css"
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -21,30 +22,61 @@ export default function Login() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-2xl font-bold mb-4">Login</h1>
-      <form onSubmit={login} className="flex flex-col w-64 gap-3">
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="p-2 border rounded"
-          required
-        />
-        <input
-          type="password"
-          placeholder="Senha"
-          value={senha}
-          onChange={(e) => setSenha(e.target.value)}
-          className="p-2 border rounded"
-          required
-        />
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded">
-          Entrar
-        </button>
-        {erro && <p className="text-red-500 text-sm">{erro}</p>}
-      </form>
+    <div className="login-container">
+      <div className="login-card">
+        <div className="login-header">
+          <h1 className="login-title">Bem-vindo ao</h1>
+          <p className="login-subtitle">Planned Hair</p>
+        </div>
+        
+        <div className="login-body">
+          <form onSubmit={login} className="login-form">
+            <div className="login-input-group">
+              <label className="login-label">Email</label>
+              <input
+                type="email"
+                placeholder="seu@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="login-input"
+                required
+              />
+            </div>
+            
+            <div className="login-input-group">
+              <label className="login-label">Senha</label>
+              <input
+                type="password"
+                placeholder="••••••••"
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+                className="login-input"
+                required
+              />
+            </div>
+            
+            <button
+              type="submit"
+              className="login-button"
+            >
+              Acessar Sistema
+            </button>
+            
+            {erro && (
+              <div className="login-error">
+                <svg className="login-error-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                {erro}
+              </div>
+            )}
+          </form>
+        </div>
+        
+        <div className="login-footer">
+          © {new Date().getFullYear()} Hair Dresser - Todos os direitos reservados
+        </div>
+      </div>
     </div>
   );
 }
