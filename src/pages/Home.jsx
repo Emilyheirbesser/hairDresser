@@ -2,6 +2,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../firebaseConfig";
 import { useNavigate } from "react-router-dom";
 
+import "./homeStyles.css"
 export default function Home() {
   const navigate = useNavigate();
 
@@ -15,32 +16,32 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow p-6">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-800">Página Inicial</h1>
+    <div className="home-container">
+      <div className="home-card">
+        <div className="home-header">
+          <h1 className="home-title">Página Inicial</h1>
           <button
             onClick={handleLogout}
-            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition"
+            className="logout-btn"
           >
             Sair
           </button>
         </div>
         
-        <div className="space-y-4">
-          <div className="p-4 border rounded-lg">
-            <h2 className="text-xl font-semibold mb-2">Bem-vindo ao Sistema</h2>
-            <p className="text-gray-600">
+        <div className="home-content">
+          <div className="welcome-section">
+            <h2 className="section-title">Bem-vindo ao Sistema</h2>
+            <p className="section-text">
               Você está autenticado! Aqui é sua página inicial.
             </p>
           </div>
           
-          <div className="p-4 border rounded-lg bg-blue-50">
-            <h3 className="font-medium text-blue-800">Navegação</h3>
-            <p className="mt-2 text-blue-600">
-              Acesse a página de <a href="/clientes" className="underline">Clientes </a>
-              ou <a href="/servicos" className="underline">Servicos</a>
-            </p>
+          <div className="navigation-section">
+            <h3 className="nav-title">Navegação</h3>
+            <div className="nav-links">
+              <a href="/clientes" className="nav-link">Clientes</a>
+              <a href="/servicos" className="nav-link">Serviços</a>
+            </div>
           </div>
         </div>
       </div>

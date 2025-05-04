@@ -1,0 +1,156 @@
+/* Estilos gerais da página */
+.home-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8f4ff 0%, #f0e8f8 100%);
+    padding: 2rem;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  /* Container principal */
+  .home-card {
+    max-width: 56rem;
+    margin-left: auto;
+    margin-right: auto;
+    background: white;
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 2.5rem;
+  }
+  
+  /* Cabeçalho */
+  .home-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  
+  .home-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #4b2e83;
+    margin: 0;
+  }
+  
+  /* Botão de logout */
+  .logout-btn {
+    background: linear-gradient(to right, #ff6b6b, #ff8e8e);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .logout-btn:hover {
+    background: linear-gradient(to right, #ff5252, #ff7676);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Seções de conteúdo */
+  .home-content {
+    display: grid;
+    gap: 1.5rem;
+  }
+  
+  .welcome-section {
+    background-color: #f9f5ff;
+    border: 1px solid #e9d8fd;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
+  }
+  
+  .welcome-section:hover {
+    transform: translateY(-3px);
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #5b21b6;
+    margin-bottom: 1rem;
+  }
+  
+  .section-text {
+    color: #6b7280;
+    line-height: 1.6;
+  }
+  
+  /* Seção de navegação */
+  .navigation-section {
+    background: linear-gradient(to right, #e0e7ff, #dbeafe);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    border: 1px solid #bfdbfe;
+  }
+  
+  .nav-title {
+    font-weight: 600;
+    color: #3730a3;
+    margin-bottom: 0.5rem;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+  
+  .nav-link {
+    color: #4f46e5;
+    font-weight: 500;
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 0.25rem;
+    transition: all 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    color: #4338ca;
+  }
+  
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #4f46e5;
+    transition: width 0.3s ease;
+  }
+  
+  .nav-link:hover::after {
+    width: 100%;
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .home-container {
+      padding: 1rem;
+    }
+    
+    .home-card {
+      padding: 1.5rem;
+      border-radius: 1rem;
+    }
+    
+    .home-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    
+    .nav-links {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+  }
