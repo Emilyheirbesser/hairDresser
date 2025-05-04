@@ -8,10 +8,8 @@
 
 /* Estilos gerais da página */
 .login-container {
-    display: flex;
-    align-items: center;
-    
-    width: 100vh;
+
+    /* width: 100vh; */
     min-height: 100vh;
     
     background: linear-gradient(135deg, #fdf2ff 0%, #fce8f8 100%);
