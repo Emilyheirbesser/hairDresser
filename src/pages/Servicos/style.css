@@ -1,0 +1,21 @@
+.container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 100px;
+}
+
+/* button {
+    border-radius: 30px;
+    background-color: #8B8AE1;
+    height: 40px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+
+}
+
+& button:hover {
+
+    opacity: 0.8;
+} */

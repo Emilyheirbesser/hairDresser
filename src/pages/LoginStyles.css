@@ -59,6 +59,10 @@
   .login-body {
     padding: 2rem;
   }
+
+  /* .login-form {
+    align-items: center;
+  } */
   
   /* Estilos dos inputs */
   .login-input-group {
@@ -103,7 +107,7 @@
   }
   
   .login-button:hover {
-    background: linear-gradient(to right, #db2777 0%, #7c3aed 100%);
+    background: linear-gradient(to right, #7f1545 0%, #7c3aed 100%);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 
                 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     transform: translateY(-1px);

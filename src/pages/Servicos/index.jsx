@@ -3,6 +3,9 @@ import { doc, collection, getDocs, addDoc, query, orderBy, limit, startAfter, de
 import ServicoForm from './ServicoForm';
 import ServicoLista from './ServicoLista';
 
+import { ArrowLeft } from '../../components/ArrowLeft.jsx';
+import "./style.css";
+
 export default function Servicos({ db }) {
   // Estados principais
   const [servicos, setServicos] = useState([]);
@@ -194,7 +197,10 @@ export default function Servicos({ db }) {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container">
+      <div className='header-with-back'>
+        <ArrowLeft />
+      </div>
       <h1 className="text-2xl font-bold mb-6">Relatório de Serviços</h1>
       
       {/* Mensagem de erro */}

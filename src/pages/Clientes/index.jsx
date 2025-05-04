@@ -1,5 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc, query, orderBy } from 'firebase/firestore';
+
+import { ArrowLeft } from '../../components/ArrowLeft.jsx';
+
 import ClienteForm from './ClienteForm';
 import ClienteLista from './ClienteLista';
 import { toast } from 'react-toastify';
@@ -108,7 +111,10 @@ export default function Clientes({ db }) {
   }
 
   return (
-    <div className="container mx-auto p-4 max-w-6xl">
+    <div className="container">
+      <div className='header-with-back'>
+        <ArrowLeft />
+      </div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-800">Gerenciamento de Clientes</h1>
         <button
