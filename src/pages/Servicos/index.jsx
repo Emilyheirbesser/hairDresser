@@ -197,89 +197,88 @@ export default function Servicos({ db }) {
   };
 
   return (
-    <div className="container">
-      <div className='header-with-back'>
-        <ArrowLeft />
-      </div>
-      <h1 className="text-2xl font-bold mb-6">Relatório de Serviços</h1>
-      
-      {/* Mensagem de erro */}
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          {error}
-        </div>
-      )}
-      
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div>
-          <div className="mb-4">
-            <input
-              type="text"
-              placeholder="Buscar cliente por nome ou telefone"
-              className="w-full p-2 border rounded"
-              value={buscaCliente}
-              onChange={(e) => setBuscaCliente(e.target.value)}
-            />
+    <div className="services-container">
+      <div className="card-services">
+        <div className="services-header">
+
+          <h1 className="services-title">Relatório de Serviços</h1>
+
+          <div>
+            <ArrowLeft />
           </div>
           
-          {/* Lista de clientes filtrados */}
-          {buscaCliente && (
-            <div className="bg-white rounded-lg shadow overflow-hidden mb-6">
-              <ul className="divide-y divide-gray-200 max-h-60 overflow-y-auto">
-                {clientesFiltrados.length > 0 ? (
-                  clientesFiltrados.map(cliente => (
-                    <li key={cliente.id} className="p-4 hover:bg-gray-50 cursor-pointer">
-                      <div 
-                        onClick={() => {
-                          setClienteSelecionado(cliente);
-                          setBuscaCliente('');
-                        }}
-                        className="flex justify-between"
-                      >
-                        <span className="font-medium">{cliente.nome}</span>
-                        <span>{cliente.telefone}</span>
-                      </div>
-                    </li>
-                  ))
-                ) : (
-                  <li className="p-4 text-gray-500">Nenhum cliente encontrado</li>
-                )}
-              </ul>
-            </div>
-          )}
-          
-          {/* Formulário de serviço */}
-          {clienteSelecionado && (
-            <ServicoForm 
-              cliente={clienteSelecionado}
-              onSubmit={handleAddServico}
-              onCancel={() => setClienteSelecionado(null)}
-              loading={loading}
-            />
-          )}
         </div>
         
-        {/* Lista de serviços */}
-        <div>
-          <ServicoLista 
-            servicos={servicosOrdenados} 
-            loading={loading}
-            onEdit={handleEditServico}
-            onDelete={handleDeleteServico}
-          />
+        {error && (
+          <div className="services-error">
+            {error}
+          </div>
+        )}
+        
+        <div className="services-grid">
+          <div>
+            <div className="client-search-container">
+              <input
+                type="text"
+                placeholder="Buscar cliente por nome ou telefone"
+                className="client-search-input"
+                value={buscaCliente}
+                onChange={(e) => setBuscaCliente(e.target.value)}
+              />
+            </div>
+            
+            {buscaCliente && (
+              <div className="client-list">
+                {clientesFiltrados.length > 0 ? (
+                  clientesFiltrados.map(cliente => (
+                    <div 
+                      key={cliente.id} 
+                      className="client-item"
+                      onClick={() => {
+                        setClienteSelecionado(cliente);
+                        setBuscaCliente('');
+                      }}
+                    >
+                      <div className="flex justify-between">
+                        <span className="client-name">{cliente.nome}</span>
+                        <span className="client-phone">{cliente.telefone}</span>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="no-clients">Nenhum cliente encontrado</div>
+                )}
+              </div>
+            )}
+            
+            {clienteSelecionado && (
+              <ServicoForm 
+                cliente={clienteSelecionado}
+                onSubmit={handleAddServico}
+                onCancel={() => setClienteSelecionado(null)}
+                loading={loading}
+              />
+            )}
+          </div>
           
-          {/* Botão para carregar mais serviços */}
-          {temMais && (
-            <div className="mt-4 flex justify-center">
+          <div className="services-list-container">
+            <ServicoLista 
+              servicos={servicosOrdenados} 
+              loading={loading}
+              onEdit={handleEditServico}
+              onDelete={handleDeleteServico}
+            />
+            
+            {temMais && (
               <button
                 onClick={handleCarregarMais}
                 disabled={loading}
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50"
+                className="load-more-btn"
               >
                 {loading ? 'Carregando...' : 'Carregar Mais'}
               </button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </div>

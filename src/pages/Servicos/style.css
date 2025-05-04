@@ -1,21 +1,180 @@
-.container {
+/* Estilos gerais */
+.services-container {
+    min-width: 100vh;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f8f4ff 0%, #f0e8f8 100%);
+    font-family: 'Poppins', sans-serif;
+
+  }
+  .card-services {
+    max-width: 56rem;
+    margin-left: auto;
+    margin-right: auto;
+    background: white;
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 2.5rem;
+  }
+  /* Header */
+  .services-header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    flex-direction: column;
-    padding-top: 100px;
-}
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  
+  .services-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #4b2e83;
+    margin: 0;
+  }
 
-/* button {
-    border-radius: 30px;
-    background-color: #8B8AE1;
-    height: 40px;
-    border: none;
-    font-weight: bold;
+  .btn-voltar {
+    margin-top: 30px;
+  }
+  
+  /* Mensagem de erro */
+  .services-error {
+    background-color: #fff5f5;
+    border-left: 4px solid #ff6b6b;
+    color: #dc2626;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Layout grid */
+  .services-grid {
+    display: grid;
+    gap: 2rem;
+  }
+  
+  @media (min-width: 1024px) {
+    .services-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  
+  /* Busca de clientes */
+  .client-search-container {
+    margin-bottom: 1.5rem;
+  }
+  
+  .client-search-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: #f4f6f8;
+    color: #8b5cf6;
+  }
+  
+  .client-search-input:focus {
+    outline: none;
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+  }
+  
+  /* Lista de clientes */
+  .client-list {
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  
+  .client-item {
+    padding: 1rem;
+    border-bottom: 1px solid #f1f5f9;
     cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .client-item:hover {
+    background-color: #f8fafc;
+  }
+  
+  .client-name {
+    font-weight: 600;
+    color: #334155;
+  }
+  
+  .client-phone {
+    color: #64748b;
+  }
+  
+  .no-clients {
+    padding: 1.5rem;
+    text-align: center;
+    color: #94a3b8;
+  }
+  
+  /* Lista de serviços */
+  .services-list-container {
+    background-color: white;
+    background: #8c7ba9;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    && button {
+        border-radius: 10px;
+        background-color: #8B8AE1;
+        height: 30px;
+        width: 60px;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+        }
+        & button:hover {
+            border-color: #8b5cf6;
+            opacity: 0.8;
 
-}
+        }
 
-& button:hover {
-
-    opacity: 0.8;
-} */
+  }
+  
+  .load-more-btn {
+    background: linear-gradient(to right, #8b5cf6, #7c3aed);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1.5rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .load-more-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .load-more-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .services-container {
+      padding: 1rem;
+    }
+    
+    .services-title {
+      font-size: 1.5rem;
+    }
+  }
