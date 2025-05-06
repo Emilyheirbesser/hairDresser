@@ -119,16 +119,13 @@
   
   /* Lista de serviços */
   .services-list-container {
-    background-color: white;
-    background: #8c7ba9;
     border-radius: 1rem;
-    padding: 1.5rem;
+    padding: 0.4rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     && button {
         border-radius: 10px;
         background-color: #8B8AE1;
-        height: 30px;
-        width: 60px;
+        width: 10vh;
         border: none;
         font-weight: bold;
         cursor: pointer;

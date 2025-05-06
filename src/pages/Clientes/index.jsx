@@ -2,11 +2,11 @@ import { useState, useEffect, useMemo } from 'react';
 import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc, query, orderBy } from 'firebase/firestore';
 
 import { ArrowLeft } from '../../components/ArrowLeft.jsx';
-
 import ClienteForm from './ClienteForm';
 import ClienteLista from './ClienteLista';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import "./stylesCliente.css";
 
 export default function Clientes({ db }) {
   const [clientes, setClientes] = useState([]);
@@ -111,40 +111,38 @@ export default function Clientes({ db }) {
   }
 
   return (
-    <div className="container">
-      <div className='header-with-back'>
+    <div className="clients-container">
+      <div className="clients-header">
+        <h1 className="clients-title">Gerenciamento de Clientes</h1>
         <ArrowLeft />
       </div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Gerenciamento de Clientes</h1>
-        <button
-          onClick={() => {
-            setClienteEditando(null);
-            setModalAberto(true);
-          }}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
-        >
-          + Novo Cliente
-        </button>
+      <button
+        onClick={() => {
+          setClienteEditando(null);
+          setModalAberto(true);
+        }}
+        className="new-client-btn"
+      >
+        + Novo Cliente
+      </button>
+
+    {error && (
+      <div className="clients-error">
+        <p>{error}</p>
       </div>
+    )}
 
-      {error && (
-        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4">
-          <p>{error}</p>
-        </div>
-      )}
-
-      <div className="bg-white rounded-lg shadow p-4 mb-6">
+      <div className="search-container">
         <div className="relative">
           <input
             type="text"
             placeholder="Buscar por nome, telefone ou email..."
-            className="w-full p-3 pl-10 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="search-input"
             value={busca}
             onChange={(e) => setBusca(e.target.value)}
           />
           <svg
-            className="absolute left-3 top-3.5 h-5 w-5 text-gray-400"
+            className="search-icon"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -162,10 +160,10 @@ export default function Clientes({ db }) {
       />
 
       {modalAberto && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
-            <div className="flex justify-between items-center border-b p-4">
-              <h3 className="text-lg font-medium">
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3 className="modal-title">
                 {clienteEditando ? 'Editar Cliente' : 'Novo Cliente'}
               </h3>
               <button
@@ -173,7 +171,7 @@ export default function Clientes({ db }) {
                   setClienteEditando(null);
                   setModalAberto(false);
                 }}
-                className="text-gray-500 hover:text-gray-700"
+                className="modal-close-btn"
               >
                 ✕
               </button>
@@ -190,7 +188,6 @@ export default function Clientes({ db }) {
           </div>
         </div>
       )}
-
     </div>
   );
 }
