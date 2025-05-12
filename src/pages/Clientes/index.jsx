@@ -116,6 +116,7 @@ export default function Clientes({ db }) {
         <h1 className="clients-title">Gerenciamento de Clientes</h1>
         <ArrowLeft />
       </div>
+      
       <button
         onClick={() => {
           setClienteEditando(null);

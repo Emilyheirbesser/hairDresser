@@ -22,19 +22,25 @@
 /* Header responsivo */
 .services-header {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  justify-content: space-between; /* Isso vai separar os itens para os extremos */
+  align-items: center; /* Alinha verticalmente no centro */
+  width: 100%;
+
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid #f3f4f6;
 }
 
 .services-title {
+  margin: 0;
   font-size: 1.75rem;
   font-weight: 700;
   color: #4b2e83;
-  margin: 0;
-  order: 2;
+  /* order: 2; */
+}
+
+.services-header > div {
+  margin-left: auto; /* Empurra o botão para a direita */
 }
 
 .btn-voltar {
@@ -217,23 +223,38 @@
   }
 }
 
+.load-services-btn {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+
+.load-services-btn:hover {
+  background-color: #45a049;
+}
+
+
+
+
 /* Ajustes para telas muito pequenas */
-@media (max-width: 400px) {
+
+@media (max-width: 639px) {
   .services-container {
-    padding: 0.5rem;
+    padding: 1.5rem;
   }
-  
-  .card-services {
-    padding: 1rem;
-    border-radius: 1rem;
-  }
-  
-  .services-title {
-    font-size: 1.5rem;
-  }
-  
-  .client-search-input {
-    padding: 0.65rem 1rem 0.65rem 2.5rem;
-    font-size: 0.9rem;
-  }
+
+  .services-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+
 }

@@ -1,3 +1,5 @@
+import "./servicosStyles.css";
+
 export default function ServicoLista({ servicos, loading, onEdit, onDelete }) {
   if (loading && servicos.length === 0) {
     return (
@@ -16,64 +18,72 @@ export default function ServicoLista({ servicos, loading, onEdit, onDelete }) {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Cliente</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Serviço</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Data/Horário</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Valor</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th>
+    <div>
+    <div className="servicos-container">
+      <table className="servicos-table">
+        <thead className="servicos-thead">
+          <tr>
+            <th className="servicos-th">Cliente</th>
+            <th className="servicos-th">Serviço</th>
+            <th className="servicos-th">Data/Horário</th>
+            <th className="servicos-th">Valor</th>
+            <th className="servicos-th">Status</th>
+            <th className="servicos-th">Observações</th>
+            <th className="servicos-th">Ações</th>
+          </tr>
+        </thead>
+        <tbody className="seervicos-tbody">
+          {servicos.map(servico => (
+            <tr key={servico.id} className="servico-tr">
+              <td className="servicos-td">{servico.clienteNome}</td>
+              <td className="servicos-td">{servico.tipo}</td>
+              <td className="servicos-td">
+                {new Date(servico.data).toLocaleDateString('pt-BR')} às {servico.horario}
+              </td>
+              <td className="servicos-td">
+                {servico.valor.toLocaleString('pt-BR', { 
+                  style: 'currency', 
+                  currency: 'BRL' 
+                })}
+              </td>
+              <td className="servicos-td">
+                <span className={`status-badge ${
+                  servico.status === 'agendado' ? 'bg-blue-100 text-blue-800' :
+                  servico.status === 'concluido' ? 'bg-green-100 text-green-800' :
+                  'bg-red-100 text-red-800'
+                }`}>
+                  {servico.status === 'agendado' ? 'Agendado' :
+                    servico.status === 'concluido' ? 'Concluído' : 'Cancelado'}
+                </span>
+              </td>
+              <td className="servicos-td observacoes-cell">
+                {servico.observacoes ? (
+                  <span className="text-sm text-gray-600">{servico.observacoes}</span>
+                ) : (
+                  <span className="text-sm text-gray-400">Nenhuma observação</span>
+                )}
+              </td>
+              <td className="servicos-td acoes-cell">
+                <button
+                  onClick={() => onEdit(servico)}
+                  className="btn-editar"
+                  disabled={loading}
+                >
+                  Editar
+                </button>
+                <button
+                  onClick={() => onDelete(servico.id)}
+                  className="btn-excluir"
+                  disabled={loading}
+                >
+                  Excluir
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {servicos.map(servico => (
-              <tr key={servico.id}>
-                <td className="px-6 py-4 whitespace-nowrap">{servico.clienteNome}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{servico.tipo}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {new Date(servico.data).toLocaleDateString('pt-BR')} às {servico.horario}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {servico.valor.toLocaleString('pt-BR', { 
-                    style: 'currency', 
-                    currency: 'BRL' 
-                  })}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 py-1 text-xs rounded-full ${
-                    servico.status === 'agendado' ? 'bg-blue-100 text-blue-800' :
-                    servico.status === 'concluido' ? 'bg-green-100 text-green-800' :
-                    'bg-red-100 text-red-800'
-                  }`}>
-                    {servico.status === 'agendado' ? 'Agendado' :
-                     servico.status === 'concluido' ? 'Concluído' : 'Cancelado'}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap space-x-2">
-                  <button
-                    onClick={() => onEdit(servico)}
-                    className="text-blue-600 hover:text-blue-900"
-                    disabled={loading}
-                  >
-                    Editar
-                  </button>
-                  <button
-                    onClick={() => onDelete(servico.id)}
-                    className="text-red-600 hover:text-red-900"
-                    disabled={loading}
-                  >
-                    Excluir
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
+    </div>
     </div>
   );
 }

@@ -1,10 +1,12 @@
 import { useState, useEffect, useMemo } from 'react';
-import { doc, collection, getDocs, addDoc, query, orderBy, limit, startAfter, deleteDoc } from 'firebase/firestore';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { doc, collection, getDocs, addDoc, query, orderBy, limit, startAfter, deleteDoc, updateDoc } from 'firebase/firestore';
 import ServicoForm from './ServicoForm';
 import ServicoLista from './ServicoLista';
-
 import { ArrowLeft } from '../../components/ArrowLeft.jsx';
 import "./style.css";
+// import "./servicosStyles.css";
 
 export default function Servicos({ db }) {
   // Estados principais
@@ -22,21 +24,34 @@ export default function Servicos({ db }) {
   const [temMais, setTemMais] = useState(true);
   const itensPorPagina = 10;
 
-  // Carrega dados do Firebase com paginação
-  const carregarDados = async () => {
+  // Carrega apenas os clientes inicialmente
+  useEffect(() => {
+    const carregarClientes = async () => {
+      try {
+        setLoading(true);
+        const clientesSnapshot = await getDocs(collection(db, 'clientes'));
+        const clientesData = clientesSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setClientes(clientesData);
+      } catch (err) {
+        console.error("Erro ao carregar clientes:", err);
+        setError("Erro ao carregar clientes. Tente novamente.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    carregarClientes();
+  }, [db]);
+
+  // Função para carregar serviços (manual ou por paginação)
+  const carregarServicos = async () => {
     try {
       setLoading(true);
       setError(null);
       
-      // Carrega clientes (sem paginação)
-      const clientesSnapshot = await getDocs(collection(db, 'clientes'));
-      const clientesData = clientesSnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setClientes(clientesData);
-
-      // Carrega serviços com paginação e ordenação por data
       let servicosQuery = query(
         collection(db, 'servicos'),
         orderBy('data', 'desc'),
@@ -49,7 +64,6 @@ export default function Servicos({ db }) {
 
       const servicosSnapshot = await getDocs(servicosQuery);
       
-      // Atualiza último documento para paginação
       if (servicosSnapshot.docs.length > 0) {
         setUltimoDoc(servicosSnapshot.docs[servicosSnapshot.docs.length - 1]);
         setTemMais(servicosSnapshot.docs.length === itensPorPagina);
@@ -57,12 +71,11 @@ export default function Servicos({ db }) {
         setTemMais(false);
       }
 
-      // Processa dados dos serviços
       const servicosData = servicosSnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
-        // Formata a data para exibição
-        dataFormatada: new Date(doc.data().data).toLocaleDateString('pt-BR')
+        dataFormatada: new Date(doc.data().data).toLocaleDateString('pt-BR'),
+        observacoes: doc.data().observacoes || ''
       }));
 
       if (paginaAtual === 1) {
@@ -70,18 +83,20 @@ export default function Servicos({ db }) {
       } else {
         setServicos(prev => [...prev, ...servicosData]);
       }
-      
     } catch (err) {
-      console.error("Erro ao carregar dados:", err);
-      setError("Erro ao carregar dados. Tente novamente.");
+      console.error("Erro ao carregar serviços:", err);
+      setError("Erro ao carregar serviços. Tente novamente.");
     } finally {
       setLoading(false);
     }
   };
 
+  // Carrega mais itens quando a página muda
   useEffect(() => {
-    carregarDados();
-  }, [db, paginaAtual]);
+    if (paginaAtual > 1) {
+      carregarServicos();
+    }
+  }, [paginaAtual]);
 
   // Filtra clientes com useMemo para melhor performance
   const clientesFiltrados = useMemo(() => {
@@ -91,12 +106,12 @@ export default function Servicos({ db }) {
     );
   }, [clientes, buscaCliente]);
 
-  // Ordena serviços por data (já vem ordenado do Firebase, mas garantimos)
+  // Ordena serviços por data
   const servicosOrdenados = useMemo(() => {
     return [...servicos].sort((a, b) => new Date(b.data) - new Date(a.data));
   }, [servicos]);
 
-  // Adiciona novo serviço
+  // Adiciona ou edita um serviço
   const handleAddServico = async (novoServico) => {
     try {
       setLoading(true);
@@ -107,17 +122,24 @@ export default function Servicos({ db }) {
           valor: parseFloat(novoServico.valor),
           clienteId: clienteSelecionado.id,
           clienteNome: clienteSelecionado.nome,
-          data: new Date(novoServico.data).toISOString()
+          data: new Date(novoServico.data).toISOString(),
+          observacoes: novoServico.observacoes || ''
         });
         
         setServicos(servicos.map(s => 
           s.id === servicoEditando.id ? { 
+            ...s,
             ...novoServico,
-            id: servicoEditando.id,
+            valor: parseFloat(novoServico.valor),
+            clienteId: clienteSelecionado.id,
+            clienteNome: clienteSelecionado.nome,
+            data: new Date(novoServico.data).toISOString(),
             dataFormatada: new Date(novoServico.data).toLocaleDateString('pt-BR')
           } : s
         ));
         
+        setServicoEditando(null);
+        setClienteSelecionado(null);
         toast.success("Serviço atualizado com sucesso!");
       } else {
         const docRef = await addDoc(collection(db, 'servicos'), {
@@ -125,7 +147,8 @@ export default function Servicos({ db }) {
           valor: parseFloat(novoServico.valor),
           clienteId: clienteSelecionado.id,
           clienteNome: clienteSelecionado.nome,
-          data: new Date(novoServico.data).toISOString()
+          data: new Date(novoServico.data).toISOString(),
+          observacoes: novoServico.observacoes || ''
         });
         
         setServicos(prev => [{
@@ -137,9 +160,6 @@ export default function Servicos({ db }) {
         
         toast.success("Serviço agendado com sucesso!");
       }
-      
-      setClienteSelecionado(null);
-      setServicoEditando(null);
     } catch (error) {
       console.error("Erro ao salvar serviço:", error);
       toast.error(`Erro ao ${servicoEditando ? 'atualizar' : 'agendar'} serviço`);
@@ -189,7 +209,6 @@ export default function Servicos({ db }) {
       setLoading(false);
     }
   };
-  
 
   // Carrega mais itens (pagination)
   const handleCarregarMais = () => {
@@ -202,10 +221,7 @@ export default function Servicos({ db }) {
         <div className="services-header">
 
           <h1 className="services-title">Relatório de Serviços</h1>
-
-          <div>
-            <ArrowLeft />
-          </div>
+          <ArrowLeft />
           
         </div>
         
@@ -262,6 +278,12 @@ export default function Servicos({ db }) {
           </div>
           
           <div className="services-list-container">
+          <button 
+            onClick={carregarServicos}
+            className="load-services-btn"
+          >
+            Carregar Serviços
+          </button>
             <ServicoLista 
               servicos={servicosOrdenados} 
               loading={loading}

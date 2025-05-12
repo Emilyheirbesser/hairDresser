@@ -1,10 +1,10 @@
+/* styleArrowLeft.css */
 @keyframes appear {
     0% {
         transform: translateX(-100%);
         background: white;
         color: rgb(57, 56, 56);
     }
-
     100% {
         transform: translateX(0);
         color: #fff;
@@ -18,114 +18,58 @@
     font-weight: 500;
     font-size: 16px;
     background-color: transparent;
-    width: 100px; /* / Largura fixa ou ajustável */
-    min-width: 50px; /*// Largura mínima do botão */
+    width: 100px;
+    min-width: 50px;
     cursor: pointer;
     display: flex;
     justify-content: flex-end;
     align-items: center;
     position: relative;
-    /* // Garante que a animação não ultrapasse os limites do botão */
-    overflow: hidden; 
+    overflow: hidden;
     top: -55px;
-    @keyframes appear {
-        0% {
-          transform: translateX(-100%);
-          background: white;
-          color: rgb(57, 56, 56);
-        }
-      
-        100% {
-          transform: translateX(0);
-          color: #fff;
-          background: linear-gradient(45deg, #7223cf, #da2eb8);
-        }
-      }
-      
-      .btn-voltar {
-        border-radius: 24px;
-        border: none;
-        font-weight: 500;
-        font-size: 16px;
-        background-color: transparent;
-        width: 100px; /* Largura fixa ou ajustável */
-        min-width: 50px; /* Largura mínima do botão */
-        cursor: pointer;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        position: relative;
-        overflow: hidden; /* Garante que a animação não ultrapasse os limites do botão */
-        top: -55px;
-        div {
-          width: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 8px;
-          padding: 8px 10px;
-          border-radius: 14px;
-          border: none;
-        }
-      
-        .btn-face-white {
-          color: #fff;
-          background-color: #8B8AE1;
-          z-index: 998;
-        }
-      
-        .btn-face-purple {
-          display: none;
-          z-index: 999;
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(45deg, #7223cf, #da2eb8);
-          color: #fff;
-        }
-      
-        &:hover {
-          .btn-face-purple {
-            display: flex;
-            animation: appear 300ms linear forwards;
-          }
-        }
-      }
-    div {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 10px;
-        border-radius: 14px;
-        border: none;
-    }
+    height: 40px; /* Adicionei altura fixa para melhor controle */
+}
 
-    .btn-face-white {
-        color: #fff;
-        background-color: #8B8AE1;
-        z-index: 998;
-    }
+.btn-voltar div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 14px;
+    border: none;
+}
 
-    .btn-face-purple {
-        display: none;
-        z-index: 999;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(45deg, #7223cf, #da2eb8);
-        color: #fff;
-    }
+.btn-face-white {
+    color: #fff;
+    background-color: #8B8AE1;
+    z-index: 998;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 24px;
+}
 
-    &:hover {
-        .btn-face-purple {
-            display: flex;
-            animation: appear 300ms linear forwards;
-        }
-    }
+.btn-face-purple {
+    display: none;
+    z-index: 999;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #7223cf, #da2eb8);
+    color: #fff;
+    border-radius: 24px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-voltar:hover .btn-face-purple {
+    display: flex;
+    animation: appear 300ms linear forwards;
 }

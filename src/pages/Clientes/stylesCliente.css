@@ -9,33 +9,36 @@ body {
 }
 
 .clients-container {
-  flex: 1;
+  width: 100%;
   max-width: 56rem;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
   background: white;
   border-radius: 1.5rem;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  padding: 2.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  box-sizing: border-box;
 }
 
 /* Header */
 .clients-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2.5rem;
+  justify-content: space-between; /* Isso vai separar os itens para os extremos */
+  align-items: center; /* Alinha verticalmente no centro */
+  width: 100%;
+
+  margin-left: auto;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid #f3f4f6;
 }
 
-  
+
 .clients-title {
-  font-size: 2rem;
+  margin: 0;
+  font-size: 1.75rem;
   font-weight: 700;
   color: #4b2e83;
-  margin: 0;
 }
 
 /* Botão Novo Cliente */
@@ -206,16 +209,11 @@ body {
   }
   
   .clients-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+
   }
   
   .clients-title {
     font-size: 1.5rem;
   }
-  
-  .new-client-btn {
-    width: 100%;
-  }
+ 
 }
