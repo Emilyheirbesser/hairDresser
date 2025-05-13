@@ -1,0 +1,126 @@
+/* Container principal */
+.cliente-list-container {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Scroll para tabelas grandes */
+.cliente-list-scroll {
+  overflow-x: auto;
+}
+
+/* Estilos da tabela */
+.cliente-list-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+/* Cabeçalho */
+.cliente-list-header {
+  background-color: #f8fafc;
+}
+
+.cliente-list-th {
+  padding: 0.75rem 1.5rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Linhas e células */
+.cliente-list-body {
+  background-color: #fff;
+}
+
+.cliente-list-row {
+  border-bottom: 1px solid #e2e8f0;
+  transition: background-color 0.2s;
+}
+
+.cliente-list-row:hover {
+  background-color: #f8fafc;
+}
+
+.cliente-list-td {
+  padding: 1rem 1.5rem;
+  font-size: 0.875rem;
+  color: #334155;
+  vertical-align: middle;
+}
+
+/* Célula de ações */
+.cliente-list-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* Botões */
+.cliente-list-edit-btn {
+  color: #3b82f6;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  transition: all 0.2s;
+}
+
+.cliente-list-edit-btn:hover {
+  color: #2563eb;
+  background-color: #eff6ff;
+}
+
+.cliente-list-edit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cliente-list-delete-btn {
+  color: #ef4444;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  transition: all 0.2s;
+}
+
+.cliente-list-delete-btn:hover {
+  color: #dc2626;
+  background-color: #fef2f2;
+}
+
+.cliente-list-delete-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Estados de carregamento e vazio */
+.cliente-list-loading,
+.cliente-list-empty {
+  text-align: center;
+  padding: 2rem;
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .cliente-list-th,
+  .cliente-list-td {
+    padding: 0.75rem 1rem;
+  }
+  
+  .cliente-list-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

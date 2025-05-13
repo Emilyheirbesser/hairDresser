@@ -135,13 +135,6 @@ export default function Clientes({ db }) {
 
       <div className="search-container">
         <div className="relative">
-          <input
-            type="text"
-            placeholder="Buscar por nome, telefone ou email..."
-            className="search-input"
-            value={busca}
-            onChange={(e) => setBusca(e.target.value)}
-          />
           <svg
             className="search-icon"
             fill="none"
@@ -150,6 +143,13 @@ export default function Clientes({ db }) {
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
           </svg>
+          <input
+            type="text"
+            placeholder="Buscar por nome, telefone ou email..."
+            className="search-input"
+            value={busca}
+            onChange={(e) => setBusca(e.target.value)}
+          />
         </div>
       </div>
 

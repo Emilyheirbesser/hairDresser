@@ -1,40 +1,44 @@
+import "./clienteListaStyles.css";
+
 export default function ClienteLista({ clientes, onEdit, onDelete, loading }) {
   if (loading && clientes.length === 0) {
-    return <div className="text-center py-8">Carregando clientes...</div>;
+    return <div className="cliente-list-loading">Carregando clientes...</div>;
   }
 
   if (clientes.length === 0) {
-    return <div className="text-center py-8 text-gray-500">Nenhum cliente encontrado</div>;
+    return <div className="cliente-list-empty">Nenhum cliente encontrado</div>;
   }
 
   return (
-    <div className="bg-white rounded-lg shadow overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+    <div className="cliente-list-container">
+      <div className="cliente-list-scroll">
+        <table className="cliente-list-table">
+          <thead className="cliente-list-header">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nome</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Telefone</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th>
+              <th className="cliente-list-th">Nome</th>
+              <th className="cliente-list-th">Telefone</th>
+              <th className="cliente-list-th">Email</th>
+              <th className="cliente-list-th">Ações</th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="cliente-list-body">
             {clientes.map(cliente => (
-              <tr key={cliente.id}>
-                <td className="px-6 py-4 whitespace-nowrap">{cliente.nome}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{cliente.telefone || '-'}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{cliente.email || '-'}</td>
-                <td className="px-6 py-4 whitespace-nowrap space-x-2">
+              <tr key={cliente.id} className="cliente-list-row">
+                <td className="cliente-list-td">{cliente.nome}</td>
+                <td className="cliente-list-td">{cliente.telefone || '-'}</td>
+                <td className="cliente-list-td">{cliente.email || '-'}</td>
+                <td className="cliente-list-td cliente-list-actions">
                   <button
                     onClick={() => onEdit(cliente)}
-                    className="text-blue-600 hover:text-blue-900"
+                    className="cliente-list-edit-btn"
+                    disabled={loading}
                   >
                     Editar
                   </button>
                   <button
                     onClick={() => onDelete(cliente.id)}
-                    className="text-red-600 hover:text-red-900"
+                    className="cliente-list-delete-btn"
+                    disabled={loading}
                   >
                     Excluir
                   </button>

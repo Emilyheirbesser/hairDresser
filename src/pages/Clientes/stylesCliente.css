@@ -74,7 +74,7 @@ body {
 
 /* Barra de busca */
 .search-container {
-  width: 40%;
+  width: 60%;
   background-color: white;
   border-radius: 1rem;
   padding: 1rem;
@@ -208,9 +208,7 @@ body {
     padding: 1rem;
   }
   
-  .clients-header {
 
-  }
   
   .clients-title {
     font-size: 1.5rem;
