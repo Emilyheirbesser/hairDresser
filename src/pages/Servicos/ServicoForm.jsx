@@ -100,7 +100,7 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
               name="data"
               value={servico.data}
               onChange={handleChange}
-              min={new Date().toISOString().split('T')[0]} // Não permite datas passadas
+              // min={new Date().toISOString().split('T')[0]} // Não permite datas passadas
               className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             />
