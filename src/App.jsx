@@ -3,7 +3,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "./firebaseConfig";
 import { useState, useEffect } from "react";
 import Login from "./pages/Login";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import Clientes from "./pages/Clientes";
 import Servicos from "./pages/Servicos";
 import Loading from "./components/Loading";

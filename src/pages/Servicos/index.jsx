@@ -6,6 +6,7 @@ import ServicoForm from './ServicoForm';
 import ServicoLista from './ServicoLista';
 import { ArrowLeft } from '../../components/ArrowLeft.jsx';
 import "./style.css";
+import { HamburgerMenu } from '../../components/HamburgerMenu.jsx';
 // import "./servicosStyles.css";
 
 export default function Servicos({ db }) {
@@ -219,7 +220,7 @@ export default function Servicos({ db }) {
     <div className="services-container">
       <div className="card-services">
         <div className="services-header">
-
+          <HamburgerMenu />
           <h1 className="services-title">Relatório de Serviços</h1>
           <ArrowLeft />
           

@@ -1,11 +1,12 @@
 import { useState, useEffect, useMemo } from 'react';
 import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc, query, orderBy } from 'firebase/firestore';
-
-import { ArrowLeft } from '../../components/ArrowLeft.jsx';
-import ClienteForm from './ClienteForm';
-import ClienteLista from './ClienteLista';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+import { ArrowLeft } from '../../components/ArrowLeft.jsx';
+import { HamburgerMenu } from '../../components/HamburgerMenu.jsx'
+import ClienteForm from './ClienteForm';
+import ClienteLista from './ClienteLista';
 import "./stylesCliente.css";
 
 export default function Clientes({ db }) {
@@ -113,6 +114,7 @@ export default function Clientes({ db }) {
   return (
     <div className="clients-container">
       <div className="clients-header">
+        <HamburgerMenu />
         <h1 className="clients-title">Gerenciamento de Clientes</h1>
         <ArrowLeft />
       </div>

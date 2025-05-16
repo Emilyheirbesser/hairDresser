@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
+import './ServicoForm.css'; 
 
 const TIPOS_SERVICO = [
   'Corte de Cabelo',
   'Coloração',
   'Hidratação',
-  'Manicure',
-  'Pedicure',
-  'Maquiagem',
+  'Mechas',
+  'Tonalizante',
+  'botox',
   'Progressiva',
   'Escova',
   'Outro'
@@ -20,33 +21,40 @@ const HORARIOS_DISPONIVEIS = [
 export default function ServicoForm({ cliente, onSubmit, onCancel, loading, servicoEditando }) {
   const [servico, setServico] = useState({
     tipo: TIPOS_SERVICO[0],
-    data: new Date().toISOString().split('T')[0],
+    data: formatDate(new Date()),
     horario: '09:00',
     valor: '',
     observacoes: '',
     status: 'agendado'
   });
 
+  // Função para formatar a data corretamente
+  function formatDate(date) {
+    const d = new Date(date);
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    const year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+  }
+
   useEffect(() => {
     if (servicoEditando) {
-      // Preenche o formulário com os dados do serviço sendo editado
+      // Corrige a formatação da data ao editar
+      const dataCorrigida = servicoEditando.data.includes('T') 
+        ? servicoEditando.data.split('T')[0]
+        : servicoEditando.data;
+        
       setServico({
         tipo: servicoEditando.tipo || TIPOS_SERVICO[0],
-        data: servicoEditando.data.split('T')[0],
+        data: dataCorrigida,
         horario: servicoEditando.horario || '09:00',
         valor: servicoEditando.valor || '',
         observacoes: servicoEditando.observacoes || '',
         status: servicoEditando.status || 'agendado'
-      });
-    } else {
-      // Reseta o formulário para novo serviço
-      setServico({
-        tipo: TIPOS_SERVICO[0],
-        data: new Date().toISOString().split('T')[0],
-        horario: '09:00',
-        valor: '',
-        observacoes: '',
-        status: 'agendado'
       });
     }
   }, [cliente, servicoEditando]);
@@ -59,11 +67,15 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Formata os dados antes de enviar
+    // Garante que a data está no formato correto
+    const dataFormatada = servico.data.includes('T') 
+      ? servico.data 
+      : `${servico.data}T00:00:00`;
+    
     const servicoFormatado = {
       ...servico,
+      data: dataFormatada,
       valor: parseFloat(servico.valor),
-      // Garante que observações não seja null/undefined
       observacoes: servico.observacoes || ''
     };
     
@@ -71,19 +83,19 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-xl font-semibold mb-4">
+    <div className="servico-form-container">
+      <h2 className="servico-form-title">
         {servicoEditando ? 'Editar Serviço' : 'Agendar Serviço'} para {cliente.nome}
       </h2>
       
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Tipo de Serviço*</label>
+      <form onSubmit={handleSubmit} className="servico-form">
+        <div className="form-group">
+          <label className="form-label">Tipo de Serviço*</label>
           <select
             name="tipo"
             value={servico.tipo}
             onChange={handleChange}
-            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="form-select"
             required
           >
             {TIPOS_SERVICO.map(tipo => (
@@ -92,27 +104,26 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
           </select>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Data*</label>
+        <div className="form-row">
+          <div className="form-group">
+            <label className="form-label">Data*</label>
             <input
               type="date"
               name="data"
               value={servico.data}
               onChange={handleChange}
-              // min={new Date().toISOString().split('T')[0]} // Não permite datas passadas
-              className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="form-input"
               required
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Horário*</label>
+          <div className="form-group">
+            <label className="form-label">Horário*</label>
             <select
               name="horario"
               value={servico.horario}
               onChange={handleChange}
-              className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="form-select"
               required
             >
               {HORARIOS_DISPONIVEIS.map(horario => (
@@ -122,10 +133,10 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
           </div>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Valor (R$)*</label>
-          <div className="relative">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">R$</span>
+        <div className="form-group">
+          <label className="form-label">Valor (R$)*</label>
+          <div className="input-with-icon">
+            <span className="input-icon">R$</span>
             <input
               type="number"
               step="0.01"
@@ -133,20 +144,20 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
               name="valor"
               value={servico.valor}
               onChange={handleChange}
-              className="w-full pl-8 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="form-input"
               placeholder="0,00"
               required
             />
           </div>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+        <div className="form-group">
+          <label className="form-label">Status</label>
           <select
             name="status"
             value={servico.status}
             onChange={handleChange}
-            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="form-select"
           >
             <option value="agendado">Agendado</option>
             <option value="concluido">Concluído</option>
@@ -154,25 +165,25 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
           </select>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Observações</label>
+        <div className="form-group">
+          <label className="form-label">Observações</label>
           <textarea
             name="observacoes"
             value={servico.observacoes}
             onChange={handleChange}
-            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="form-textarea"
             rows="3"
             placeholder="Detalhes do serviço, preferências do cliente, etc."
           />
-          <p className="mt-1 text-sm text-gray-500">Opcional</p>
+          <p className="form-hint">Opcional</p>
         </div>
 
-        <div className="flex justify-end space-x-3 pt-4">
+        <div className="form-actions">
           <button
             type="button"
             onClick={onCancel}
             disabled={loading}
-            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+            className="cancel-button"
           >
             Cancelar
           </button>
@@ -180,11 +191,9 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
           <button
             type="submit"
             disabled={loading}
-            className={`px-4 py-2 rounded-md text-white ${
-              loading ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'
-            }`}
+            className={`submit-button ${loading ? 'loading' : ''}`}
           >
-            {loading ? 'Salvando...' : servicoEditando ? 'Atualizar' : 'Agendar'}
+            {loading ? 'Salvando...' : servicoEditando ? 'Atualizar' : 'Salvar'}
           </button>
         </div>
       </form>

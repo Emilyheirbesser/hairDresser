@@ -50,7 +50,7 @@ export default function ClienteForm({
       
       <form onSubmit={handleSubmit} className="cliente-form">
         <div className="form-group">
-          <label className="form-label">Nome*</label>
+          <label className="form-label">Nome</label>
           <input
             type="text"
             name="nome"

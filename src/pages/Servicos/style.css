@@ -30,6 +30,9 @@
   padding-bottom: 1.5rem;
   border-bottom: 1px solid #f3f4f6;
 }
+.hamburger-menu-container {
+  margin-right: auto;
+}
 
 .services-title {
   margin: 0;
@@ -39,7 +42,7 @@
   /* order: 2; */
 }
 
-.services-header > div {
+.services-header > span {
   margin-left: auto; /* Empurra o botão para a direita */
 }
 
