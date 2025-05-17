@@ -12,7 +12,7 @@ export default function ServicoLista({ servicos, loading, onEdit, onDelete }) {
   if (servicos.length === 0) {
     return (
       <div className="bg-white rounded-lg shadow p-6 text-center text-gray-500">
-        Nenhum serviço agendado ainda
+        Nenhum serviço salvo ainda
       </div>
     );
   }

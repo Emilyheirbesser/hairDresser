@@ -1,13 +1,13 @@
 import { useState, useEffect, useMemo } from 'react';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { doc, collection, getDocs, addDoc, query, orderBy, limit, startAfter, deleteDoc, updateDoc } from 'firebase/firestore';
+import { HamburgerMenu } from '../../components/HamburgerMenu.jsx';
+import { ArrowLeft } from '../../components/ArrowLeft.jsx';
+import { toast } from 'react-toastify';
+import ServicoPesquisa from './ServicoPesquisa.jsx';
 import ServicoForm from './ServicoForm';
 import ServicoLista from './ServicoLista';
-import { ArrowLeft } from '../../components/ArrowLeft.jsx';
+import 'react-toastify/dist/ReactToastify.css';
 import "./style.css";
-import { HamburgerMenu } from '../../components/HamburgerMenu.jsx';
-// import "./servicosStyles.css";
 
 export default function Servicos({ db }) {
   // Estados principais
@@ -23,6 +23,7 @@ export default function Servicos({ db }) {
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [ultimoDoc, setUltimoDoc] = useState(null);
   const [temMais, setTemMais] = useState(true);
+  const [todosServicos, setTodosServicos] = useState([]);
   const itensPorPagina = 10;
 
   // Carrega apenas os clientes inicialmente
@@ -92,9 +93,29 @@ export default function Servicos({ db }) {
     }
   };
 
+  // carregamento separado só para busca:
+  const carregarTodosServicos = async () => {
+    try {
+      const snapshot = await getDocs(query(collection(db, 'servicos'), orderBy('data', 'desc')));
+      const dados = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        dataFormatada: new Date(doc.data().data).toLocaleDateString('pt-BR')
+      }));
+      setTodosServicos(dados);
+    } catch (err) {
+      console.error("Erro ao carregar todos os serviços para pesquisa:", err);
+    }
+  };
+  useEffect(() => {
+
+    carregarTodosServicos();
+  }, [db]);
+
+
   // Carrega mais itens quando a página muda
   useEffect(() => {
-    if (paginaAtual > 1) {
+    if (paginaAtual === 1 || paginaAtual > 1) {
       carregarServicos();
     }
   }, [paginaAtual]);
@@ -270,21 +291,27 @@ export default function Servicos({ db }) {
             
             {clienteSelecionado && (
               <ServicoForm 
+                key={servicoEditando ? servicoEditando.id : 'novo'}
                 cliente={clienteSelecionado}
+                servicoEditando={servicoEditando}
                 onSubmit={handleAddServico}
-                onCancel={() => setClienteSelecionado(null)}
+                onCancel={() => {
+                  setClienteSelecionado(null);
+                  setServicoEditando(null);
+                }}
                 loading={loading}
               />
             )}
           </div>
           
           <div className="services-list-container">
-          <button 
+          {/* <button 
             onClick={carregarServicos}
             className="load-services-btn"
           >
             Carregar Serviços
-          </button>
+          </button> */}
+            <ServicoPesquisa servicos={todosServicos} />
             <ServicoLista 
               servicos={servicosOrdenados} 
               loading={loading}

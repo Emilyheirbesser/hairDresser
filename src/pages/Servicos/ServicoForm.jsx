@@ -7,7 +7,7 @@ const TIPOS_SERVICO = [
   'Hidratação',
   'Mechas',
   'Tonalizante',
-  'botox',
+  'Botox',
   'Progressiva',
   'Escova',
   'Outro'

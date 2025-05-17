@@ -1,0 +1,61 @@
+.servico-search-container {
+  margin-top: 20px;
+}
+
+.servico-search-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 3rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #f8fafc;
+  color: #4b2e83;
+  box-sizing: border-box;
+}
+
+.servico-list {
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.servico-item {
+  color: #4b2e83;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+.servico-item:hover {
+  background-color: #f0f0f0;
+}
+
+.no-servicos {
+  padding: 10px;
+  text-align: center;
+  color: #777;
+}
+
+.servico-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.servico-popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+}
