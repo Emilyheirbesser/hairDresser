@@ -115,7 +115,7 @@
 
 .client-name {
   font-weight: 600;
-  color: #334155;
+  color: #4b2e83;
   font-size: 0.95rem;
 }
 
@@ -140,7 +140,7 @@
 
 .services-list-container button {
   border-radius: 0.75rem;
-  background-color: #8B8AE1;
+  background-color: #7c3aed;
   width: 100%;
   max-width: 120px;
   border: none;
@@ -153,8 +153,20 @@
 }
 
 .services-list-container button:hover {
-  background-color: #7c3aed;
   opacity: 0.9;
+}
+
+td {
+  background-color: #dedcdc;
+}
+
+.servicos-th {
+  background: linear-gradient(45deg, #7223cf, #da2eb8);
+
+  color: #fff;
+}
+.servicos-td {
+  color: #4b2e83;
 }
 
 /* Botão Carregar Mais */
@@ -256,8 +268,6 @@
   gap: 0.5rem;
   margin-top: 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #f3f4f6;
-}
-
-
+  border-bottom: 1px solid #f3f4f6; 
+  }
 }
