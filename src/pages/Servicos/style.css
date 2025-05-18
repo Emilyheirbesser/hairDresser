@@ -26,6 +26,7 @@
   align-items: center; /* Alinha verticalmente no centro */
   width: 100%;
 
+  margin-top: 3rem;
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid #f3f4f6;
@@ -213,11 +214,11 @@ td {
   
   .services-title {
     font-size: 2rem;
-    order: 1;
+    /* order: 1; */
   }
   
   .btn-voltar {
-    order: 2;
+    /* order: 2; */
     margin-bottom: 0;
   }
 }
@@ -265,8 +266,9 @@ td {
   .services-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 0.5rem;
-  margin-top: 1rem;
+  margin-top: 4rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid #f3f4f6; 
   }
