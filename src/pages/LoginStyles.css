@@ -12,7 +12,7 @@
     /* width: 100vh; */
     min-height: 100vh;
     
-    background: linear-gradient(135deg, #fdf2ff 0%, #fce8f8 100%);
+    background: linear-gradient(135deg, #000000 0%, #0b0f52 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -32,11 +32,28 @@
   }
   
   /* Cabeçalho com gradiente */
-  .login-header {
-    background: linear-gradient(to right, #ec4899 0%, #8b5cf6 100%);
-    padding: 1.5rem;
-    text-align: center;
+  
+  @keyframes gradientMove {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
+  
+.login-header {
+  background: linear-gradient(270deg, #010d3c, #4491ef);
+  background-size: 400% 400%;
+  animation: gradientMove 8s ease infinite;
+  padding: 1.5rem;
+  text-align: center;
+  color: white;
+}
+
   
   .login-title {
     font-size: 1.875rem;
@@ -58,10 +75,6 @@
     padding: 2rem;
   }
 
-  /* .login-form {
-    align-items: center;
-  } */
-  
   /* Estilos dos inputs */
   .login-input-group {
     margin-bottom: 1.25rem;
@@ -82,7 +95,7 @@
     border: 1px solid #d1d5db;
     transition: all 0.3s ease;
   }
-  
+
   .login-input:focus {
     outline: none;
     border-color: transparent;
@@ -92,9 +105,10 @@
   /* Botão de login */
   .login-button {
     width: 100%;
-    background: linear-gradient(to right, #ec4899 0%, #8b5cf6 100%);
+    background: linear-gradient(to right, #010d3c 0%, #4491ef 100%);
     color: white;
     padding: 0.75rem 1rem;
+    margin-bottom: 1.75rem;
     border-radius: 0.5rem;
     font-weight: 500;
     border: none;
@@ -105,12 +119,17 @@
   }
   
   .login-button:hover {
-    background: linear-gradient(to right, #7f1545 0%, #7c3aed 100%);
+    /* background: linear-gradient(to right, #d96c6c 0%, #e14c1a 100%); */
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 
                 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     transform: translateY(-1px);
+    opacity: 0.8;
   }
   
+  .acesso{
+    margin-bottom: 0.25rem;
+  }
+    
   /* Mensagem de erro */
   .login-error {
     margin-top: 1rem;

@@ -3,12 +3,16 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebaseConfig";
 import { useNavigate } from "react-router-dom";
 
-import "./LoginStyles.css"
+import Register from "./Register";
+import "./LoginStyles.css";
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
   const navigate = useNavigate();
+  const [showRegister, setShowRegister] = useState(false);
+
 
   const login = async (e) => {
     e.preventDefault();
@@ -61,6 +65,17 @@ export default function Login() {
             >
               Acessar Sistema
             </button>
+            <label className="login-label acesso">Não tem Acesso?</label>
+            <button
+              type="button"
+              onClick={() => setShowRegister(true)}
+              className="register-button"
+            >
+              Registrar Conta
+            </button>
+            {showRegister && <Register onClose={() => setShowRegister(false)} />}
+
+
             
             {erro && (
               <div className="login-error">

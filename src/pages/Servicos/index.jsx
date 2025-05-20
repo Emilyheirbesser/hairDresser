@@ -1,16 +1,26 @@
 import { useState, useEffect, useMemo } from 'react';
-import { doc, collection, getDocs, addDoc, query, orderBy, limit, startAfter, deleteDoc, updateDoc } from 'firebase/firestore';
+import {
+  doc, collection, getDocs, addDoc, query,
+  orderBy, limit, startAfter, deleteDoc,
+  updateDoc, where
+} from 'firebase/firestore';
+import { toast } from 'react-toastify';
 import { HamburgerMenu } from '../../components/HamburgerMenu.jsx';
 import { ArrowLeft } from '../../components/ArrowLeft.jsx';
-import { toast } from 'react-toastify';
 import ServicoPesquisa from './ServicoPesquisa.jsx';
 import ServicoForm from './ServicoForm';
 import ServicoLista from './ServicoLista';
 import 'react-toastify/dist/ReactToastify.css';
 import "./style.css";
 
+// Supondo que você esteja usando Auth Context
+import { getAuth } from 'firebase/auth';
+
 export default function Servicos({ db }) {
-  // Estados principais
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const uid = user?.uid;
+
   const [servicos, setServicos] = useState([]);
   const [clientes, setClientes] = useState([]);
   const [buscaCliente, setBuscaCliente] = useState('');
@@ -18,20 +28,19 @@ export default function Servicos({ db }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [servicoEditando, setServicoEditando] = useState(null);
-
-  // Estados para paginação
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [ultimoDoc, setUltimoDoc] = useState(null);
   const [temMais, setTemMais] = useState(true);
   const [todosServicos, setTodosServicos] = useState([]);
   const itensPorPagina = 10;
 
-  // Carrega apenas os clientes inicialmente
   useEffect(() => {
     const carregarClientes = async () => {
       try {
         setLoading(true);
-        const clientesSnapshot = await getDocs(collection(db, 'clientes'));
+        const clientesRef = collection(db, 'clientes');
+        const q = query(clientesRef, where('uid', '==', uid));
+        const clientesSnapshot = await getDocs(q);
         const clientesData = clientesSnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
@@ -45,17 +54,18 @@ export default function Servicos({ db }) {
       }
     };
 
-    carregarClientes();
-  }, [db]);
+    if (uid) carregarClientes();
+  }, [db, uid]);
 
-  // Função para carregar serviços (manual ou por paginação)
   const carregarServicos = async () => {
     try {
       setLoading(true);
       setError(null);
-      
+
+      let servicosRef = collection(db, 'servicos');
       let servicosQuery = query(
-        collection(db, 'servicos'),
+        servicosRef,
+        where('uid', '==', uid),
         orderBy('data', 'desc'),
         limit(itensPorPagina)
       );
@@ -64,27 +74,29 @@ export default function Servicos({ db }) {
         servicosQuery = query(servicosQuery, startAfter(ultimoDoc));
       }
 
-      const servicosSnapshot = await getDocs(servicosQuery);
-      
-      if (servicosSnapshot.docs.length > 0) {
-        setUltimoDoc(servicosSnapshot.docs[servicosSnapshot.docs.length - 1]);
-        setTemMais(servicosSnapshot.docs.length === itensPorPagina);
+      const snapshot = await getDocs(servicosQuery);
+
+      if (snapshot.docs.length > 0) {
+        setUltimoDoc(snapshot.docs[snapshot.docs.length - 1]);
+        setTemMais(snapshot.docs.length === itensPorPagina);
       } else {
         setTemMais(false);
       }
 
-      const servicosData = servicosSnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        dataFormatada: new Date(doc.data().data).toLocaleDateString('pt-BR'),
-        observacoes: doc.data().observacoes || ''
-      }));
+      const dados = snapshot.docs.map(doc => {
+        const dataDoc = doc.data();
+        return {
+          id: doc.id,
+          ...dataDoc,
+          dataFormatada: dataDoc.data
+            ? new Date(dataDoc.data).toLocaleDateString('pt-BR')
+            : '',
+          observacoes: dataDoc.observacoes || ''
+        };
+      });
 
-      if (paginaAtual === 1) {
-        setServicos(servicosData);
-      } else {
-        setServicos(prev => [...prev, ...servicosData]);
-      }
+      setServicos(prev => paginaAtual === 1 ? dados : [...prev, ...dados]);
+
     } catch (err) {
       console.error("Erro ao carregar serviços:", err);
       setError("Erro ao carregar serviços. Tente novamente.");
@@ -93,10 +105,15 @@ export default function Servicos({ db }) {
     }
   };
 
-  // carregamento separado só para busca:
   const carregarTodosServicos = async () => {
     try {
-      const snapshot = await getDocs(query(collection(db, 'servicos'), orderBy('data', 'desc')));
+      const snapshot = await getDocs(
+        query(
+          collection(db, 'servicos'),
+          where('uid', '==', uid),
+          orderBy('data', 'desc')
+        )
+      );
       const dados = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
@@ -107,20 +124,17 @@ export default function Servicos({ db }) {
       console.error("Erro ao carregar todos os serviços para pesquisa:", err);
     }
   };
+
   useEffect(() => {
+    if (uid) carregarTodosServicos();
+  }, [db, uid]);
 
-    carregarTodosServicos();
-  }, [db]);
-
-
-  // Carrega mais itens quando a página muda
   useEffect(() => {
-    if (paginaAtual === 1 || paginaAtual > 1) {
+    if (uid && (paginaAtual === 1 || paginaAtual > 1)) {
       carregarServicos();
     }
-  }, [paginaAtual]);
+  }, [paginaAtual, uid]);
 
-  // Filtra clientes com useMemo para melhor performance
   const clientesFiltrados = useMemo(() => {
     return clientes.filter(cliente =>
       cliente.nome.toLowerCase().includes(buscaCliente.toLowerCase()) ||
@@ -128,60 +142,46 @@ export default function Servicos({ db }) {
     );
   }, [clientes, buscaCliente]);
 
-  // Ordena serviços por data
   const servicosOrdenados = useMemo(() => {
     return [...servicos].sort((a, b) => new Date(b.data) - new Date(a.data));
   }, [servicos]);
 
-  // Adiciona ou edita um serviço
   const handleAddServico = async (novoServico) => {
     try {
       setLoading(true);
-      
+
+      const servicoFormatado = {
+        ...novoServico,
+        valor: parseFloat(novoServico.valor),
+        clienteId: clienteSelecionado.id,
+        clienteNome: clienteSelecionado.nome,
+        data: new Date(novoServico.data).toISOString(),
+        uid: uid,
+        observacoes: novoServico.observacoes || ''
+      };
+
       if (servicoEditando) {
-        await updateDoc(doc(db, 'servicos', servicoEditando.id), {
-          ...novoServico,
-          valor: parseFloat(novoServico.valor),
-          clienteId: clienteSelecionado.id,
-          clienteNome: clienteSelecionado.nome,
-          data: new Date(novoServico.data).toISOString(),
-          observacoes: novoServico.observacoes || ''
-        });
-        
-        setServicos(servicos.map(s => 
-          s.id === servicoEditando.id ? { 
+        await updateDoc(doc(db, 'servicos', servicoEditando.id), servicoFormatado);
+        setServicos(servicos.map(s =>
+          s.id === servicoEditando.id ? {
             ...s,
-            ...novoServico,
-            valor: parseFloat(novoServico.valor),
-            clienteId: clienteSelecionado.id,
-            clienteNome: clienteSelecionado.nome,
-            data: new Date(novoServico.data).toISOString(),
+            ...servicoFormatado,
             dataFormatada: new Date(novoServico.data).toLocaleDateString('pt-BR')
           } : s
         ));
-        
-        setServicoEditando(null);
-        setClienteSelecionado(null);
         toast.success("Serviço atualizado com sucesso!");
       } else {
-        const docRef = await addDoc(collection(db, 'servicos'), {
-          ...novoServico,
-          valor: parseFloat(novoServico.valor),
-          clienteId: clienteSelecionado.id,
-          clienteNome: clienteSelecionado.nome,
-          data: new Date(novoServico.data).toISOString(),
-          observacoes: novoServico.observacoes || ''
-        });
-        
+        const docRef = await addDoc(collection(db, 'servicos'), servicoFormatado);
         setServicos(prev => [{
           id: docRef.id,
-          ...novoServico,
-          clienteNome: clienteSelecionado.nome,
+          ...servicoFormatado,
           dataFormatada: new Date(novoServico.data).toLocaleDateString('pt-BR')
         }, ...prev]);
-        
         toast.success("Serviço agendado com sucesso!");
       }
+
+      setServicoEditando(null);
+      setClienteSelecionado(null);
     } catch (error) {
       console.error("Erro ao salvar serviço:", error);
       toast.error(`Erro ao ${servicoEditando ? 'atualizar' : 'agendar'} serviço`);
@@ -197,32 +197,16 @@ export default function Servicos({ db }) {
     });
     setServicoEditando(servico);
   };
-  
+
   const handleDeleteServico = async (id) => {
     if (!window.confirm("Tem certeza que deseja excluir este serviço?")) return;
-    
+
     try {
       setLoading(true);
-
-      //debug
-      console.log("ID do serviço a ser deletado:", id);
-
-      // Cria a referência do documento corretamente
-      const servicoRef = doc(db, 'servicos', id);
-      
-      // Debug: verifique o caminho da referência
-      console.log("Caminho do documento:", servicoRef.path);
-      
-      // Executa a exclusão
-      await deleteDoc(servicoRef); 
-
-      // Atualiza o estado local removendo o serviço deletado
+      await deleteDoc(doc(db, 'servicos', id));
       setServicos(prevServicos => prevServicos.filter(servico => servico.id !== id));
-      
-      // Reseta a paginação pois os itens mudaram
       setPaginaAtual(1);
       setUltimoDoc(null);
-      
       toast.success("Serviço excluído com sucesso!");
     } catch (error) {
       console.error("Erro ao deletar serviço:", error);
@@ -232,7 +216,6 @@ export default function Servicos({ db }) {
     }
   };
 
-  // Carrega mais itens (pagination)
   const handleCarregarMais = () => {
     setPaginaAtual(prev => prev + 1);
   };

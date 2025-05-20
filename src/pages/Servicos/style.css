@@ -3,7 +3,7 @@
   width: 100%;
   min-height: 100vh;
   padding: 1rem;
-  background: linear-gradient(135deg, #f8f4ff 0%, #f0e8f8 100%);
+  background: linear-gradient(135deg, #000000 0%, #0b0f52 100%);
   font-family: 'Poppins', sans-serif;
   box-sizing: border-box;
 }
@@ -12,7 +12,7 @@
   width: 100%;
   max-width: 56rem;
   margin: 0 auto;
-  background: white;
+  background: rgb(221, 235, 244);
   border-radius: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
@@ -39,7 +39,7 @@
   margin: 0;
   font-size: 1.75rem;
   font-weight: 700;
-  color: #4b2e83;
+  color: #0b0f52;
   /* order: 2; */
 }
 
@@ -85,7 +85,7 @@
   font-size: 1rem;
   transition: all 0.3s ease;
   background-color: #f8fafc;
-  color: #4b2e83;
+  color: #0b0f52;
   box-sizing: border-box;
 }
 
@@ -116,7 +116,7 @@
 
 .client-name {
   font-weight: 600;
-  color: #4b2e83;
+  color: #0b0f52;
   font-size: 0.95rem;
 }
 
@@ -141,7 +141,7 @@
 
 .services-list-container button {
   border-radius: 0.75rem;
-  background-color: #7c3aed;
+  background-color: #0b0f52;
   width: 100%;
   max-width: 120px;
   border: none;
@@ -167,7 +167,7 @@ td {
   color: #fff;
 }
 .servicos-td {
-  color: #4b2e83;
+  color: #0b0f52;
 }
 
 /* Botão Carregar Mais */

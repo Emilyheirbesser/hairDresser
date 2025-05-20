@@ -1,15 +1,27 @@
 import { useState, useEffect, useMemo } from 'react';
-import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc, query, orderBy } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  doc,
+  deleteDoc,
+  query,
+  orderBy,
+  where
+} from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { ArrowLeft } from '../../components/ArrowLeft.jsx';
-import { HamburgerMenu } from '../../components/HamburgerMenu.jsx'
+import { HamburgerMenu } from '../../components/HamburgerMenu.jsx';
 import ClienteForm from './ClienteForm';
 import ClienteLista from './ClienteLista';
-import "./stylesCliente.css";
+import './stylesCliente.css';
 
-export default function Clientes({ db }) {
+export default function Clientes({ db, user }) {
+  const uid = user?.uid;
+
   const [clientes, setClientes] = useState([]);
   const [clienteEditando, setClienteEditando] = useState(null);
   const [busca, setBusca] = useState('');
@@ -17,19 +29,25 @@ export default function Clientes({ db }) {
   const [error, setError] = useState(null);
   const [modalAberto, setModalAberto] = useState(false);
 
-  // Carrega clientes do Firebase com ordenação
+  // Carrega clientes do Firebase com filtro por UID e ordenação por nome
   useEffect(() => {
+    if (!uid) return;
+
     const carregarClientes = async () => {
       try {
         setLoading(true);
-        const q = query(collection(db, 'clientes'), orderBy('nome'));
+        const q = query(
+          collection(db, 'clientes'),
+          where('uid', '==', uid),
+          orderBy('nome')
+        );
+
         const querySnapshot = await getDocs(q);
-        
         const clientesData = querySnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
         }));
-        
+
         setClientes(clientesData);
         setError(null);
       } catch (err) {
@@ -42,7 +60,7 @@ export default function Clientes({ db }) {
     };
 
     carregarClientes();
-  }, [db]);
+  }, [db, uid]);
 
   // Filtra clientes com useMemo para melhor performance
   const clientesFiltrados = useMemo(() => {
@@ -53,23 +71,24 @@ export default function Clientes({ db }) {
     );
   }, [clientes, busca]);
 
-  // Adiciona/Atualiza cliente
+  // Adiciona ou atualiza cliente
   const handleAddCliente = async (novoCliente) => {
     try {
       setLoading(true);
-      
+      const clienteComUid = { ...novoCliente, uid };
+
       if (clienteEditando) {
-        await updateDoc(doc(db, 'clientes', clienteEditando.id), novoCliente);
-        setClientes(clientes.map(c => 
-          c.id === clienteEditando.id ? { ...novoCliente, id: clienteEditando.id } : c
+        await updateDoc(doc(db, 'clientes', clienteEditando.id), clienteComUid);
+        setClientes(clientes.map(c =>
+          c.id === clienteEditando.id ? { ...clienteComUid, id: clienteEditando.id } : c
         ));
         toast.success("Cliente atualizado com sucesso!");
       } else {
-        const docRef = await addDoc(collection(db, 'clientes'), novoCliente);
-        setClientes([...clientes, { ...novoCliente, id: docRef.id }]);
+        const docRef = await addDoc(collection(db, 'clientes'), clienteComUid);
+        setClientes([...clientes, { ...clienteComUid, id: docRef.id }]);
         toast.success("Cliente adicionado com sucesso!");
       }
-      
+
       setClienteEditando(null);
       setModalAberto(false);
     } catch (error) {
@@ -83,7 +102,7 @@ export default function Clientes({ db }) {
   // Remove cliente
   const handleDelete = async (id) => {
     if (!window.confirm("Tem certeza que deseja excluir este cliente?")) return;
-    
+
     try {
       setLoading(true);
       await deleteDoc(doc(db, 'clientes', id));
