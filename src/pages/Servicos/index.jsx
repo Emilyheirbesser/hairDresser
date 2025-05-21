@@ -288,12 +288,6 @@ export default function Servicos({ db }) {
           </div>
           
           <div className="services-list-container">
-          {/* <button 
-            onClick={carregarServicos}
-            className="load-services-btn"
-          >
-            Carregar Serviços
-          </button> */}
             <ServicoPesquisa servicos={todosServicos} />
             <ServicoLista 
               servicos={servicosOrdenados} 

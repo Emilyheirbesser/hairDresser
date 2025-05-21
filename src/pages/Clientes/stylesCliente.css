@@ -1,33 +1,36 @@
 /* Estilos gerais */
-body {
-  margin: 0;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background-color: #f8f4ff;
-  font-family: 'Poppins', sans-serif;
-}
 
 .clients-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  padding: 1rem;
+}
+
+.card-clients {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   max-width: 56rem;
-  margin: 0 auto;
-  background: white;
+  background: rgb(221, 235, 244);
   border-radius: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
-  box-sizing: border-box;
+  padding: 1rem;
 }
 
 /* Header */
 .clients-header {
   display: flex;
-  justify-content: space-between; /* Isso vai separar os itens para os extremos */
+  justify-content: space-between;
   align-items: center; /* Alinha verticalmente no centro */
   width: 100%;
 
   margin-left: auto;
-  margin-top: 2rem;
+  margin-top: 1rem;
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid #f3f4f6;
@@ -35,17 +38,18 @@ body {
 
 
 .clients-title {
+  align-items: center;
   margin: 0;
   font-size: 1.75rem;
   font-weight: 700;
-  color: #4b2e83;
+  color: #0c2eb2;
 }
 
 /* Botão Novo Cliente */
 .new-client-btn {
   margin-bottom: 8px;
   width: 40%;
-  background: linear-gradient(to right, #baa7e6, #7c3aed);
+  background: linear-gradient(to right, #010d3c 0%, #4491ef 100%);
   color: white;
   padding: 0.75rem 1.5rem;
   border-radius: 0.75rem;
@@ -57,7 +61,8 @@ body {
 }
 
 .new-client-btn:hover {
-  background: linear-gradient(to right, #7c3aed, #6d28d9);
+  background: linear-gradient(to right, #4491ef 0%, #010d3c 100%);
+  opacity: 0.6;
   transform: translateY(-2px);
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
@@ -74,7 +79,8 @@ body {
 
 /* Barra de busca */
 .search-container {
-  width: 60%;
+  width: 90%;
+  max-width: 600px;
   background-color: white;
   border-radius: 1rem;
   padding: 1rem;
@@ -83,7 +89,7 @@ body {
 }
 
 .search-input {
-  color: #8b5cf6;
+  color: #0b0f52;
   background-color: #f4f6f8;
   width: 100%;
   padding: 0.75rem 1rem 0.75rem 2.5rem;
@@ -95,7 +101,7 @@ body {
 
 .search-input:focus {
   outline: none;
-  border-color: #8b5cf6;
+  border-color: #4491ef;
   box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
 }
 
@@ -143,12 +149,12 @@ body {
 .modal-title {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #8b5cf6;
+  color: #0b0f52;
   margin: 0;
 }
 
 .modal-close-btn {
-  color: #8b5cf6;
+  color: #0b0f52;
   background: none;
   border: none;
   cursor: pointer;
@@ -157,7 +163,7 @@ body {
 }
 
 .modal-close-btn:hover {
-  color: #8b5cf6;
+  color: #010d3c;
 }
 
 .services-list-container {
@@ -176,7 +182,7 @@ body {
     width: 10vh;
     border: none;
     border-radius: 5px;
-    background: #8b5cf6;
+    background: #010d3c;
     cursor: pointer;
 
   }
@@ -185,12 +191,13 @@ body {
   }
 }
 .p-6 {
-  color: #8b5cf6;
+  align-items: center;
+  color: #0b0f52;
 
   & input {
     border: none;
     box-shadow: 10px 10px 15px -3px rgba(0, 0, 0, 0.1);
-    color: #8b5cf6;
+    color: #010d3c;
     border-radius: 8px;
     background: #c2c2c2;
   }
@@ -205,7 +212,7 @@ body {
 /* Responsividade */
 @media (max-width: 768px) {
   .clients-container {
-    padding: 1rem;
+    padding: 0.5rem;
   }
   
 

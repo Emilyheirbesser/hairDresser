@@ -1,5 +1,6 @@
 /* Container principal */
 .cliente-list-container {
+  align-items: center;
   background-color: #fff;
   border-radius: 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -20,31 +21,32 @@
 
 /* Cabeçalho */
 .cliente-list-header {
+  font-weight: bold;
   background-color: #f8fafc;
 }
 
 .cliente-list-th {
   padding: 0.75rem 1.5rem;
-  text-align: left;
+  text-align: center;
   font-size: 0.75rem;
   font-weight: 500;
-  color: #64748b;
+  color: #07254e;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 /* Linhas e células */
 .cliente-list-body {
-  background-color: #fff;
+  background-color: #c2d0e6;
 }
 
 .cliente-list-row {
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #6788b1;
   transition: background-color 0.2s;
 }
 
 .cliente-list-row:hover {
-  background-color: #f8fafc;
+  background-color: #a1b4c8;
 }
 
 .cliente-list-td {
@@ -62,7 +64,7 @@
 
 /* Botões */
 .cliente-list-edit-btn {
-  color: #3b82f6;
+  color: #246ce0;
   background: none;
   border: none;
   cursor: pointer;
@@ -73,8 +75,9 @@
 }
 
 .cliente-list-edit-btn:hover {
+  font-weight: bold;
   color: #2563eb;
-  background-color: #eff6ff;
+  /* background-color: #cdd8e6; */
 }
 
 .cliente-list-edit-btn:disabled {
@@ -95,7 +98,8 @@
 
 .cliente-list-delete-btn:hover {
   color: #dc2626;
-  background-color: #fef2f2;
+  font-weight: bold;
+  /* background-color: #fef2f2; */
 }
 
 .cliente-list-delete-btn:disabled {
@@ -118,7 +122,10 @@
   .cliente-list-td {
     padding: 0.75rem 1rem;
   }
-  
+  .cliente-list-container {
+    align-items: center;
+  width: 90%;
+  }
   .cliente-list-actions {
     flex-direction: column;
     gap: 0.5rem;

@@ -95,7 +95,7 @@ export default function ClienteForm({
         </div>
 
         <div className="form-actions">
-          {clienteEditando && (
+          {onCancel && (
             <button
               type="button"
               onClick={onCancel}

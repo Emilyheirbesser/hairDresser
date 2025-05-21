@@ -46,6 +46,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   width: 200px;
   overflow: hidden;
+  opacity: 0.8;
 }
 
 .menu-list {
@@ -63,29 +64,34 @@
 }
 
 .menu-link {
+  gap: 2;
   display: block;
   width: 100%;
   padding: 12px 16px;
   text-align: left;
   background: none;
   border: none;
-  color: #333;
+  color: #0b0f52;
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .menu-link:hover {
-  background-color: #f8f8f8;
-}
+  background-color: #e0e7f5;
+  transform: translate(4px);}
 
 .logout-link {
+  font-weight: bold;
   color: #e74c3c;
 }
 
 /* Responsivo */
-@media (max-width: 768px) {
+@media (max-width: 668px) {
   .menu-nav {
     width: 180px;
+  }
+  .hamburger-button {
+    left: auto;
   }
 }

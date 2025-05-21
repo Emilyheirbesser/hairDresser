@@ -132,11 +132,12 @@ export default function Clientes({ db, user }) {
 
   return (
     <div className="clients-container">
-      <div className="clients-header">
-        <HamburgerMenu />
-        <h1 className="clients-title">Gerenciamento de Clientes</h1>
-        <ArrowLeft />
-      </div>
+      <div className='card-clients'>
+        <div className="clients-header">
+          <HamburgerMenu />
+          <h1 className="clients-title">Gerenciamento de Clientes</h1>
+          <ArrowLeft />
+        </div>
       
       <button
         onClick={() => {
@@ -144,7 +145,7 @@ export default function Clientes({ db, user }) {
           setModalAberto(true);
         }}
         className="new-client-btn"
-      >
+        >
         + Novo Cliente
       </button>
 
@@ -156,21 +157,14 @@ export default function Clientes({ db, user }) {
 
       <div className="search-container">
         <div className="relative">
-          <svg
-            className="search-icon"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-          </svg>
+
           <input
             type="text"
             placeholder="Buscar por nome, telefone ou email..."
             className="search-input"
             value={busca}
             onChange={(e) => setBusca(e.target.value)}
-          />
+            />
         </div>
       </div>
 
@@ -179,25 +173,11 @@ export default function Clientes({ db, user }) {
         onEdit={handleEdit}
         onDelete={handleDelete}
         loading={loading}
-      />
+        />
 
       {modalAberto && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <div className="modal-header">
-              <h3 className="modal-title">
-                {clienteEditando ? 'Editar Cliente' : 'Novo Cliente'}
-              </h3>
-              <button
-                onClick={() => {
-                  setClienteEditando(null);
-                  setModalAberto(false);
-                }}
-                className="modal-close-btn"
-              >
-                ✕
-              </button>
-            </div>
             <ClienteForm 
               onSubmit={handleAddCliente} 
               clienteEditando={clienteEditando}
@@ -206,10 +186,11 @@ export default function Clientes({ db, user }) {
                 setModalAberto(false);
               }}
               loading={loading}
-            />
+              />
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }

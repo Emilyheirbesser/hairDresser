@@ -12,7 +12,7 @@
 .cliente-form-title {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #333;
+  color: #093ea0;
   margin-bottom: 1.5rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid #eee;
@@ -89,7 +89,7 @@
 /* Botões */
 .cancel-button {
   padding: 0.5rem 1rem;
-  background-color: #fff;
+  background-color: #ef8080;
   border: 1px solid #d1d5db;
   color: #4b5563;
   border-radius: 0.375rem;
@@ -98,7 +98,7 @@
 }
 
 .cancel-button:hover {
-  background-color: #f9fafb;
+  background-color: red;
 }
 
 .cancel-button:disabled {
@@ -108,7 +108,7 @@
 
 .submit-button {
   padding: 0.5rem 1rem;
-  background-color: #3b82f6;
+  background-color: #407cdc;
   color: white;
   border: none;
   border-radius: 0.375rem;
@@ -117,7 +117,7 @@
 }
 
 .submit-button:hover {
-  background-color: #2563eb;
+  background-color: #03102b;
 }
 
 .submit-button:disabled {
@@ -139,8 +139,7 @@
     flex-direction: column;
   }
   
-  .cancel-button,
-  .submit-button {
+  .cancel-button .submit-button {
     width: 100%;
   }
 }

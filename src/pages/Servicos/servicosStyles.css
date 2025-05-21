@@ -23,7 +23,7 @@
 }
 
 .servicos-th {
-  padding: 1rem;
+  padding: 0.8rem;
   text-align: center;
   font-weight: 600;
   color: #334155;
@@ -44,7 +44,7 @@
 }
 
 .servicos-td {
-  padding: 1rem;
+  padding: 0.6rem;
   vertical-align: middle;
   color: #dadee4;
 }
@@ -90,7 +90,7 @@
 /* Botões */
 .btn-editar {
   padding: 0.375rem 0.75rem;
-  background-color: #3b82f6;
+  background-color: #0c2eb2;
   color: white;
   border-radius: 0.25rem;
   border: none;
@@ -99,7 +99,7 @@
 }
 
 .btn-editar:hover {
-  background-color: #cad1e0;
+  background-color: #6188dd;
 }
 
 .btn-editar:disabled {
@@ -119,6 +119,7 @@
 
 .btn-excluir:hover {
   background-color: #dc2626;
+  opacity: 0.8;
 }
 
 .btn-excluir:disabled {
@@ -126,7 +127,7 @@
   cursor: not-allowed;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 500px) {
   
 
 }
