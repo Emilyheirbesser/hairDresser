@@ -1,9 +1,8 @@
 /* Estilos gerais da página */
 
 .home-container {
-    min-height: 100vh;
-    /* background: linear-gradient(135deg, #000000 0%, #0b0f52 100%); */
-    padding: 1rem;
+    min-height: 90vh;
+    padding: 0.1rem;
     font-family: 'Poppins', sans-serif;
   }
   
@@ -16,7 +15,7 @@
     border-radius: 1.5rem;
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    padding: 2.5rem;
+    padding: 1.5rem;
   }
   
   /* Cabeçalho */
@@ -33,6 +32,12 @@
     font-size: 2rem;
     font-weight: 700;
     color: #0c2eb2;
+  }
+
+  .figura-home {
+    color: #0c2eb2;
+    width: 40px;
+    height: 35px;
   }
   
   /* Botão de logout */

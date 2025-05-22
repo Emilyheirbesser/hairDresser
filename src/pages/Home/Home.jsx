@@ -112,7 +112,7 @@ export default function Home() {
         <div className="home-header">
           <HamburgerMenu />
           <h1 className="home-title">Página Inicial</h1>
-          <FiHome color="blue" />
+          <FiHome className="figura-home" />
         </div>
 
         <div className="home-content">

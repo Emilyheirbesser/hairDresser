@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import './ServicoForm.css'; 
 
 const TIPOS_SERVICO = [
+  'Auxilio',
   'Corte de Cabelo',
   'Coloração',
   'Hidratação',
   'Mechas',
   'Tonalizante',
   'Botox',
+  'Preparo',
   'Progressiva',
   'Escova',
   'Outro'
