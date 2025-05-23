@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
-import { FiHome, FiUsers, FiLogOut } from 'react-icons/fi';
+import { FiHome, FiUsers, FiLogOut, FiUser } from 'react-icons/fi';
 import { FaTools } from "react-icons/fa";
 
 import './HamburgerStyles.css';
@@ -72,6 +72,16 @@ export function HamburgerMenu() {
               >
                 <FaTools />
                 Atendimentos
+              </button>
+            </li>
+
+            <li className="menu-item">
+              <button 
+                onClick={() => handleNavigation('/perfil')} 
+                className="menu-link flex items-center gap-2"
+              >
+                <FiUser />
+                Perfil
               </button>
             </li>
 

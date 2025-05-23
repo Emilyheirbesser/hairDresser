@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HamburgerMenu } from "../../components/HamburgerMenu";
 import { FiHome } from "react-icons/fi";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { doc, getDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { db, auth } from "../../firebaseConfig"; // db = Firestore
 import "./homeStyles.css";
 
@@ -17,14 +17,24 @@ export default function Home() {
   const [totalServicos, setTotalServicos] = useState(0);
 
   const navigate = useNavigate();
+
   useEffect(() => {
     const user = auth.currentUser;
 
     if (user) {
-      setUserName(user.email || "usuário");
-
       const fetchDados = async () => {
         try {
+          // Buscar nome do usuário na coleção 'usuarios'
+          const userRef = doc(db, "usuarios", user.uid);
+          const userSnap = await getDoc(userRef);
+
+          if (userSnap.exists()) {
+            const userData = userSnap.data();
+            setUserName(userData.nome || "usuário");
+          } else {
+            setUserName(user.email || "usuário");
+          }
+
           // Total de Clientes do usuário
           const clientesQuery = query(collection(db, "clientes"), where("uid", "==", user.uid));
           const clientesSnap = await getDocs(clientesQuery);
@@ -43,6 +53,7 @@ export default function Home() {
       fetchDados();
     }
   }, []);
+
 
   const handleLogout = async () => {
     try {

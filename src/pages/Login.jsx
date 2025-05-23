@@ -73,7 +73,6 @@ export default function Login() {
             >
               Registrar Conta
             </button>
-            {showRegister && <Register onClose={() => setShowRegister(false)} />}
 
 
             
@@ -86,6 +85,7 @@ export default function Login() {
               </div>
             )}
           </form>
+          {showRegister && <Register onClose={() => setShowRegister(false)} />}
         </div>
         
         <div className="login-footer">
