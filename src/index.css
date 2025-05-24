@@ -1,21 +1,38 @@
+/* Reset e Box Sizing */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Variáveis e fontes */
 :root {
-  font-family: Poppins, sans-serif;
+  --font-base: 'Poppins', sans-serif;
+
+  /* Paleta de cores padrão */
+  --bg-gradient: linear-gradient(to right, #010d3c 0%, #4491ef 100%);
+  --text-light: #fff;
+  --text-dark: #333;
 
   color-scheme: light dark;
-  color: #fff;
-  background-color: #242424 ;
+  color: var(--text-light);
+  background-color: #242424;
+  font-family: var(--font-base);
 }
 
-body, html {
+/* Estilo base do documento */
+html, body {
   min-height: 100vh;
-  width: 100vw; 
-  /* background: linear-gradient(180deg, #363467 0%,rgba(30,29, 79, 0.8) 100%); */
+  width: 100vw;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text-dark);
+}
 
-};
-
+/* Melhor usabilidade em alguns dispositivos */
+body {
+  overflow-x: hidden;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  padding: 1rem;
+}

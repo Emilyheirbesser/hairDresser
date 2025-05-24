@@ -1,16 +1,4 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(to right, #010d3c 0%, #4491ef 100%);
-  color: #333;
-  min-height: 100vh;
-  padding: 2rem;
-}
 
 /* Container principal */
 .services-container {
@@ -35,6 +23,8 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
+  border-bottom: 1px solid #f3f4f6;
+
 }
 
 .services-title {

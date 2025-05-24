@@ -177,3 +177,22 @@
   border-radius: 4px;
   cursor: pointer;
 }
+
+
+.grafico-section {
+  color: #0c2eb2;
+  background: white;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.toggle-grafico-btn {
+  margin-top: 2rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(270deg, #010d3c, #4491ef);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}

@@ -31,16 +31,15 @@
   margin-left: auto;
   margin-top: 1rem;
   margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid #f3f4f6;
 }
 
 
 .clients-title {
   align-items: center;
-  margin: 0;
   font-size: 1.75rem;
-  font-weight: 700;
+  font-weight: bold;
   color: #0c2eb2;
 }
 

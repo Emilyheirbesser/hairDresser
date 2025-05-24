@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HamburgerMenu } from "../../components/HamburgerMenu";
 import { FiHome } from "react-icons/fi";
-import { doc, getDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { doc, Timestamp, serverTimestamp, getDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { db, auth } from "../../firebaseConfig"; // db = Firestore
+import { startOfMonth, endOfMonth, subMonths } from "date-fns";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import "./homeStyles.css";
 
 const INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 minutos
@@ -17,42 +19,69 @@ export default function Home() {
   const [totalServicos, setTotalServicos] = useState(0);
 
   const navigate = useNavigate();
+  const [dadosMensais, setDadosMensais] = useState([]);
+  const [mostrarGrafico, setMostrarGrafico] = useState(false);
 
   useEffect(() => {
-    const user = auth.currentUser;
+    const fetchDados = async () => {
+      try {
+        const user = auth.currentUser;
+        if (!user) return;
 
-    if (user) {
-      const fetchDados = async () => {
-        try {
-          // Buscar nome do usuário na coleção 'usuarios'
-          const userRef = doc(db, "usuarios", user.uid);
-          const userSnap = await getDoc(userRef);
+        const userRef = doc(db, "usuarios", user.uid);
+        const userSnap = await getDoc(userRef);
 
-          if (userSnap.exists()) {
-            const userData = userSnap.data();
-            setUserName(userData.nome || "usuário");
-          } else {
-            setUserName(user.email || "usuário");
-          }
-
-          // Total de Clientes do usuário
-          const clientesQuery = query(collection(db, "clientes"), where("uid", "==", user.uid));
-          const clientesSnap = await getDocs(clientesQuery);
-          setTotalClientes(clientesSnap.size);
-
-          // Total de Serviços do usuário
-          const servicosQuery = query(collection(db, "servicos"), where("uid", "==", user.uid));
-          const servicosSnap = await getDocs(servicosQuery);
-          setTotalServicos(servicosSnap.size);
-
-        } catch (error) {
-          console.error("Erro ao buscar dados:", error);
+        if (userSnap.exists()) {
+          const userData = userSnap.data();
+          setUserName(userData.nome || "usuário");
+        } else {
+          setUserName(user.email || "usuário");
         }
-      };
 
-      fetchDados();
-    }
+
+        // Buscar dados dos últimos 6 meses
+        const meses = [];
+        const agora = new Date();
+
+        for (let i = 5; i >= 0; i--) {
+          const inicio = startOfMonth(subMonths(agora, i));
+          const fim = endOfMonth(subMonths(agora, i));
+
+          const clientesSnap = await getDocs(
+            query(
+              collection(db, "clientes"),
+              where("uid", "==", user.uid),
+              where("criadoEm", ">=", Timestamp.fromDate(inicio)),
+              where("criadoEm", "<=", Timestamp.fromDate(fim)),
+            )
+          );
+
+          const servicosSnap = await getDocs(
+            query(
+              collection(db, "servicos"),
+              where("uid", "==", user.uid),
+              where("criadoEm", ">=", Timestamp.fromDate(inicio)),
+              where("criadoEm", "<=", Timestamp.fromDate(fim)),
+            )
+          );
+
+          meses.push({
+            mes: inicio.toLocaleDateString('pt-BR', { month: 'short' }),
+            clientes: clientesSnap.size,
+            servicos: servicosSnap.size,
+          });
+        }
+
+        setDadosMensais(meses);
+        // (demais lógicas aqui – gráfico, etc.)
+      } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+      }
+    };
+
+    fetchDados();
   }, []);
+
 
 
   const handleLogout = async () => {
@@ -132,16 +161,28 @@ export default function Home() {
             <p className="section-text">Você está autenticado!</p>
           </div>
 
-          <div className="stats-section">
-            <div className="stat-card">
-              <h3>Clientes</h3>
-              <p>{totalClientes}</p>
+          <button onClick={() => setMostrarGrafico(!mostrarGrafico)} className="toggle-grafico-btn">
+            {mostrarGrafico ? "Esconder Gráfico" : "Mostrar Gráfico"}
+          </button>
+          {mostrarGrafico && (
+            <div className="grafico-section">
+              <h3>Evolução Mensal</h3>
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={dadosMensais}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="mes" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line type="monotone" dataKey="clientes" stroke="#8884d8" name="Clientes" />
+                  <Line type="monotone" dataKey="servicos" stroke="#82ca9d" name="Serviços" />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
-            <div className="stat-card">
-              <h3>Serviços</h3>
-              <p>{totalServicos}</p>
-            </div>
-          </div>
+          )}
+
+
+
         </div>
       </div>
     </div>
