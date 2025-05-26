@@ -1,5 +1,6 @@
 /* Container principal */
 .cliente-list-container {
+  width: 90%;
   align-items: center;
   background-color: #fff;
   border-radius: 0.5rem;

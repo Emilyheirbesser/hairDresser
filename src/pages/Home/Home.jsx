@@ -164,6 +164,7 @@ export default function Home() {
           <button onClick={() => setMostrarGrafico(!mostrarGrafico)} className="toggle-grafico-btn">
             {mostrarGrafico ? "Esconder Gráfico" : "Mostrar Gráfico"}
           </button>
+          
           {mostrarGrafico && (
             <div className="grafico-section">
               <h3>Evolução Mensal</h3>
@@ -180,8 +181,6 @@ export default function Home() {
               </ResponsiveContainer>
             </div>
           )}
-
-
 
         </div>
       </div>
