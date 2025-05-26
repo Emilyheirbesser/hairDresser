@@ -2,21 +2,22 @@ import { useState, useEffect } from 'react';
 import './ServicoForm.css'; 
 
 const TIPOS_SERVICO = [
-  'Auxilio',
-  'Corte de Cabelo',
-  'Coloração',
-  'Hidratação',
-  'Mechas',
-  'Tonalizante',
   'Botox',
+  'Auxilio',
+  'Coloração',
+  'Corte de Cabelo',
+  'Escova',
+  'Lavagem',
+  'Mechas',
   'Preparo',
   'Progressiva',
-  'Escova',
+  'Tonalizante',
+  'Tratamentos',
   'Outro'
 ];
 
 const HORARIOS_DISPONIVEIS = [
-  '08:00', '09:00', '10:00', '11:00', 
+  '08:00', '09:00', '10:00', '11:00', '12:00',
   '13:00', '14:00', '15:00', '16:00', '17:00'
 ];
 
@@ -87,7 +88,7 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
   return (
     <div className="servico-form-container">
       <h2 className="servico-form-title">
-        {servicoEditando ? 'Editar Serviço' : 'Agendar Serviço'} para {cliente.nome}
+        {servicoEditando ? 'Editar Serviço' : 'Salvar Serviço'} para {cliente.nome}
       </h2>
       
       <form onSubmit={handleSubmit} className="servico-form">

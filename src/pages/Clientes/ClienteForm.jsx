@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { db, auth } from "../../firebaseConfig";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import "./clienteFormStyles.css";
 
 export default function ClienteForm({ 
@@ -37,9 +39,35 @@ export default function ClienteForm({
     setCliente(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(cliente);
+    try {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const clientesRef = collection(db, "clientes");
+
+      const q = query(
+        clientesRef,
+        where("uid", "==", user.uid),
+        where("nome", "==", cliente.nome.trim())
+      );
+
+      const querySnapshot = await getDocs(q);
+
+      const nomeExistente = querySnapshot.docs.length > 0 &&
+        (!clienteEditando || querySnapshot.docs[0].id !== clienteEditando.id);
+
+      if (nomeExistente) {
+        alert(`Cliente "${cliente.nome.trim()}" já existe.`);
+        return;
+      }
+
+      onSubmit(cliente);
+    } catch (error) {
+      console.error("Erro ao verificar nome:", error);
+      alert("Erro ao verificar nome do cliente.");
+    }
   };
 
   return (
@@ -100,7 +128,7 @@ export default function ClienteForm({
               type="button"
               onClick={onCancel}
               disabled={loading}
-              className="cancel-button"
+              className="cancel-button-form"
             >
               Cancelar
             </button>
@@ -109,7 +137,7 @@ export default function ClienteForm({
           <button
             type="submit"
             disabled={loading}
-            className={`submit-button ${loading ? 'loading' : ''}`}
+            className={`submit-button-form ${loading ? 'loading' : ''}`}
           >
             {loading ? (
               'Salvando...'

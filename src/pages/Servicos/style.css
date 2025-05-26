@@ -40,8 +40,14 @@
   gap: 2rem;
 }
 
+
 /* Campo de busca */
 .client-search-container {
+  align-items: center;
+  background-color: #f9fafb;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
   margin-bottom: 1rem;
 }
 

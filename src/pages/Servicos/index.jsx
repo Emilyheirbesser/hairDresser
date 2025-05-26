@@ -182,9 +182,10 @@ export default function Servicos({ db }) {
 
       setServicoEditando(null);
       setClienteSelecionado(null);
+      await carregarTodosServicos();
     } catch (error) {
       console.error("Erro ao salvar serviço:", error);
-      toast.error(`Erro ao ${servicoEditando ? 'atualizar' : 'agendar'} serviço`);
+      toast.error(`Erro ao ${servicoEditando ? 'atualizar' : 'salvar'} serviço`);
     } finally {
       setLoading(false);
     }
@@ -227,18 +228,18 @@ export default function Servicos({ db }) {
           <HamburgerMenu />
           <h1 className="services-title">Relatório de Atendimento</h1>
           <ArrowLeft />
-          
         </div>
-        
+
         {error && (
           <div className="services-error">
             {error}
           </div>
         )}
-        
+
         <div className="services-grid">
-          <div>
+          <div container-client-search>
             <div className="client-search-container">
+              <p> Pesquise o cliente para a inclusão do serviço:</p>
               <input
                 type="text"
                 placeholder="Buscar cliente por nome ou telefone"
@@ -246,14 +247,12 @@ export default function Servicos({ db }) {
                 value={buscaCliente}
                 onChange={(e) => setBuscaCliente(e.target.value)}
               />
-            </div>
-            
             {buscaCliente && (
               <div className="client-list">
                 {clientesFiltrados.length > 0 ? (
                   clientesFiltrados.map(cliente => (
-                    <div 
-                      key={cliente.id} 
+                    <div
+                      key={cliente.id}
                       className="client-item"
                       onClick={() => {
                         setClienteSelecionado(cliente);
@@ -271,9 +270,10 @@ export default function Servicos({ db }) {
                 )}
               </div>
             )}
-            
+            </div>
+
             {clienteSelecionado && (
-              <ServicoForm 
+              <ServicoForm
                 key={servicoEditando ? servicoEditando.id : 'novo'}
                 cliente={clienteSelecionado}
                 servicoEditando={servicoEditando}
@@ -286,16 +286,19 @@ export default function Servicos({ db }) {
               />
             )}
           </div>
-          
+
           <div className="services-list-container">
+            <p>
+              Pesquise aqui os serviços já salvos!
+            </p>
             <ServicoPesquisa servicos={todosServicos} />
-            <ServicoLista 
-              servicos={servicosOrdenados} 
+            <ServicoLista
+              servicos={servicosOrdenados}
               loading={loading}
               onEdit={handleEditServico}
               onDelete={handleDeleteServico}
             />
-            
+
             {temMais && (
               <button
                 onClick={handleCarregarMais}
