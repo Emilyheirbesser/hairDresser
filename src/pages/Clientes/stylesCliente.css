@@ -219,7 +219,20 @@
   }
 }
 
+.mostrar-mais {
+  margin-top: 0.5rem;
+  background: linear-gradient(270deg, #010d3c, #4491ef);
+  background-size: 400% 400%;
+  animation: gradientMove 8s ease infinite;  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 
+}
 
 /* Responsividade */
 @media (max-width: 768px) {

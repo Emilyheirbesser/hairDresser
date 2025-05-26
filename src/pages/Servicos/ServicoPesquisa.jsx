@@ -71,7 +71,7 @@ export default function ServicoPesquisa({ servicos }) {
             }) || 'R$ 0,00'}</p>
             <p><strong>Status:</strong> {servicoSelecionado.status || 'Indefinido'}</p>
             <p><strong>Observações:</strong> {servicoSelecionado.observacoes || 'Nenhuma'}</p>
-            <button onClick={() => setServicoSelecionado(null)}>Fechar</button>
+            <button className='btn-fechar' onClick={() => setServicoSelecionado(null)}>Fechar</button>
           </div>
         </div>
       )}

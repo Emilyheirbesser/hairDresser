@@ -9,7 +9,6 @@ import {
   query,
   orderBy,
   where,
-  serverTimestamp
 } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -29,6 +28,7 @@ export default function Clientes({ db, user }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [modalAberto, setModalAberto] = useState(false);
+  const [limiteExibicao, setLimiteExibicao] = useState(10); // Exibir 10 inicialmente
 
   // Carrega clientes do Firebase com filtro por UID e ordenação por nome
   useEffect(() => {
@@ -65,12 +65,13 @@ export default function Clientes({ db, user }) {
 
   // Filtra clientes com useMemo para melhor performance
   const clientesFiltrados = useMemo(() => {
-    return clientes.filter(cliente =>
+    const filtrados = clientes.filter(cliente =>
       cliente.nome.toLowerCase().includes(busca.toLowerCase()) ||
       (cliente.telefone && cliente.telefone.includes(busca)) ||
       (cliente.email && cliente.email.toLowerCase().includes(busca.toLowerCase()))
     );
-  }, [clientes, busca]);
+    return filtrados.slice(0, limiteExibicao); // limitar exibição
+  }, [clientes, busca, limiteExibicao]);
 
   // Adiciona ou atualiza cliente
   const handleAddCliente = async (novoCliente) => {
@@ -165,7 +166,7 @@ export default function Clientes({ db, user }) {
             className="search-input"
             value={busca}
             onChange={(e) => setBusca(e.target.value)}
-            />
+          />
         </div>
       </div>
 
@@ -174,7 +175,21 @@ export default function Clientes({ db, user }) {
         onEdit={handleEdit}
         onDelete={handleDelete}
         loading={loading}
-        />
+      />
+      {clientesFiltrados.length < clientes.filter(cliente =>
+        cliente.nome.toLowerCase().includes(busca.toLowerCase()) ||
+        (cliente.telefone && cliente.telefone.includes(busca)) ||
+        (cliente.email && cliente.email.toLowerCase().includes(busca.toLowerCase()))
+      ).length && (
+        <div className="text-center mt-4">
+          <button
+            className="mostrar-mais"
+            onClick={() => setLimiteExibicao(limiteExibicao + 10)}
+          >
+            Mostrar mais
+          </button>
+        </div>
+      )}
 
       {modalAberto && (
         <div className="modal-overlay">
