@@ -4,7 +4,12 @@ import './ServicoPesquisa.css';
 
 export default function ServicoPesquisa({ servicos }) {
   const [busca, setBusca] = useState('');
-  const [servicoSelecionado, setServicoSelecionado] = useState(null);
+  const [dataSelecionada, setDataSelecionada] = useState(null);
+  const [servicoEmFoco, setServicoEmFoco] = useState(null);
+
+  const servicosDaData = useMemo(() => {
+    return servicos.filter(s => s.dataFormatada === dataSelecionada);
+  }, [dataSelecionada, servicos]);
 
   const servicosFiltrados = useMemo(() => {
     const termo = busca.toLowerCase();
@@ -43,7 +48,10 @@ export default function ServicoPesquisa({ servicos }) {
               <div
                 key={servico.id}
                 className="servico-item"
-                onClick={() => setServicoSelecionado(servico)}
+                onClick={() => {
+                  setDataSelecionada(servico.dataFormatada);
+                  setServicoEmFoco(servico);
+                }}
               >
                 <div className="flex justify-between">
                   <span>{servico.clienteNome}</span>
@@ -57,24 +65,82 @@ export default function ServicoPesquisa({ servicos }) {
         </div>
       )}
 
-      {servicoSelecionado && (
+      {dataSelecionada && (
         <div className="servico-popup">
           <div className="servico-popup-content">
-            <h2>Detalhes do Serviço</h2>
-            <p><strong>Cliente:</strong> {servicoSelecionado.clienteNome}</p>
-            <p><strong>Serviço:</strong> {servicoSelecionado.tipo}</p>
-            <p><strong>Data:</strong> {servicoSelecionado.dataFormatada || 'Data não informada'}</p>
-            <p><strong>Horário:</strong> {servicoSelecionado.horario || 'Não informado'}</p>
-            <p><strong>Valor:</strong> {servicoSelecionado.valor?.toLocaleString('pt-BR', {
-              style: 'currency',
-              currency: 'BRL'
-            }) || 'R$ 0,00'}</p>
-            <p><strong>Status:</strong> {servicoSelecionado.status || 'Indefinido'}</p>
-            <p><strong>Observações:</strong> {servicoSelecionado.observacoes || 'Nenhuma'}</p>
-            <button className='btn-fechar' onClick={() => setServicoSelecionado(null)}>Fechar</button>
+            <div className="popup-header">
+              <h2>Serviços em {dataSelecionada}</h2>
+              <button className="btn-fechar"
+                aria-label="Fechar"
+                onClick={() => {
+                setDataSelecionada(null);
+                setServicoEmFoco(null);
+              }}>Fechar</button>
+            </div>
+            <div className="col-span-2">
+              {servicoEmFoco && (
+                <div>
+                  <p><strong>Cliente:</strong> {servicoEmFoco.clienteNome}</p>
+
+                  <p><strong>Serviço:</strong></p>
+                  <ul className="pl-4 list-disc">
+                    {Array.isArray(servicoEmFoco.tipos) ? (
+                      servicoEmFoco.tipos.map((tipo, index) => (
+                        <li key={index}>
+                          {tipo.tipo} - {parseFloat(tipo.valor || 0).toLocaleString('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                          })}
+                        </li>
+                      ))
+                    ) : (
+                      <li>
+                        {servicoEmFoco.tipo || 'Não informado'} - {parseFloat(servicoEmFoco.valor || 0).toLocaleString('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL'
+                        })}
+                      </li>
+                    )}
+                  </ul>
+
+                  <p><strong>Horário:</strong> {servicoEmFoco.horario || 'Não informado'}</p>
+
+                  <p><strong>Valor Total:</strong> {
+                    (Array.isArray(servicoEmFoco.tipos)
+                      ? servicoEmFoco.tipos.reduce((total, t) => total + parseFloat(t.valor || 0), 0)
+                      : parseFloat(servicoEmFoco.valor || 0)
+                    ).toLocaleString('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL'
+                    })
+                  }</p>
+
+                  <p><strong>Status:</strong> {servicoEmFoco.status || 'Indefinido'}</p>
+                  <p><strong>Observações:</strong> {servicoEmFoco.observacoes || 'Nenhuma'}</p>
+                </div>
+              )}
+            </div>
+
+            <div className="popup-body grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="servico-card">
+                <h3 className="font-bold mb-2">Outros Serviços</h3>
+                {servicosDaData.map(s => (
+                  <div
+                    key={`${s.id}-${s.horario}`}
+                    className={`cursor-pointer p-1 rounded ${s.id === servicoEmFoco?.id ? 'bg-blue-100' : 'hover:bg-gray-100'}`}
+                    onClick={() => setServicoEmFoco(s)}
+                  >
+                    <p>{s.clienteNome}</p>
+                    <small>{s.horario || 'Horário indefinido'}</small>
+                  </div>
+                ))}
+              </div>
+
+            </div>
           </div>
         </div>
       )}
+
     </div>
   );
 }

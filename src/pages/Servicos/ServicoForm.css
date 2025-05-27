@@ -7,16 +7,34 @@
   max-width: 800px;
 }
 
+.servico-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 1rem;
+}
+
 /* Título do formulário */
 .servico-form-title {
   font-size: 1.5rem;
   font-weight: 600;
   color: #0b0f52;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #eee;
 }
 
+.btn-fechar-top {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #666;
+}
+.btn-fechar-top:hover {
+  color: #d00;
+}
 /* Formulário */
 .servico-form {
   display: flex;
@@ -65,8 +83,8 @@
   background-color: #fff;
   width: 100%;
   padding: 0.625rem;
-  border: 0.5px solid #aec9f4;
-  border-radius: 0.375rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
   font-size: 0.875rem;
   transition: all 0.2s;
 }

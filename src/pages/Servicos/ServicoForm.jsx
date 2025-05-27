@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import './ServicoForm.css'; 
 
 const TIPOS_SERVICO = [
-  'Botox',
   'Auxilio',
+  'Botox',
   'Coloração',
   'Corte de Cabelo',
   'Escova',
@@ -26,7 +26,7 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
     tipo: TIPOS_SERVICO[0],
     data: formatDate(new Date()),
     horario: '09:00',
-    valor: '',
+    servicosSelecionados: [{ tipo: TIPOS_SERVICO[0], valor: 0 }],
     observacoes: '',
     status: 'agendado'
   });
@@ -46,21 +46,44 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
 
   useEffect(() => {
     if (servicoEditando) {
-      // Corrige a formatação da data ao editar
-      const dataCorrigida = servicoEditando.data.includes('T') 
+      const dataCorrigida = servicoEditando.data.includes('T')
         ? servicoEditando.data.split('T')[0]
         : servicoEditando.data;
-        
+
+      const tipos = servicoEditando.tipo?.split(',') || [TIPOS_SERVICO[0]];
+      const valores = typeof servicoEditando.valor === 'number'
+        ? [servicoEditando.valor]
+        : (servicoEditando.valor || '0').toString().split(',').map(v => parseFloat(v));
+
+      const servicosSelecionados = tipos.map((tipo, i) => ({
+        tipo: tipo.trim(),
+        valor: valores[i] || 0
+      }));
+
       setServico({
-        tipo: servicoEditando.tipo || TIPOS_SERVICO[0],
         data: dataCorrigida,
         horario: servicoEditando.horario || '09:00',
-        valor: servicoEditando.valor || '',
+        servicosSelecionados,
         observacoes: servicoEditando.observacoes || '',
         status: servicoEditando.status || 'agendado'
       });
     }
   }, [cliente, servicoEditando]);
+
+  const handleServicoChange = (index, field, value) => {
+    setServico(prev => {
+      const novos = [...prev.servicosSelecionados];
+      novos[index][field] = field === 'valor' ? parseFloat(value) || 0 : value;
+      return { ...prev, servicosSelecionados: novos };
+    });
+  };
+
+  const adicionarServico = () => {
+    setServico(prev => ({
+      ...prev,
+      servicosSelecionados: [...prev.servicosSelecionados, { tipo: TIPOS_SERVICO[0], valor: 0 }]
+    }));
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,43 +92,69 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Garante que a data está no formato correto
-    const dataFormatada = servico.data.includes('T') 
-      ? servico.data 
-      : `${servico.data}T00:00:00`;
-    
+    const tipos = servico.servicosSelecionados.map(s => s.tipo).join(', ');
+    const valorTotal = servico.servicosSelecionados.reduce((soma, s) => soma + s.valor, 0);
+
     const servicoFormatado = {
-      ...servico,
-      data: dataFormatada,
-      valor: parseFloat(servico.valor),
-      observacoes: servico.observacoes || ''
+      tipo: tipos,
+      tipos: servico.servicosSelecionados, // novo campo com lista de tipos + valores
+      valor: valorTotal,
+      data: `${servico.data}T00:00:00`,
+      horario: servico.horario,
+      observacoes: servico.observacoes,
+      status: servico.status
     };
-    
+
     onSubmit(servicoFormatado);
   };
 
   return (
     <div className="servico-form-container">
-      <h2 className="servico-form-title">
-        {servicoEditando ? 'Editar Serviço' : 'Salvar Serviço'} para {cliente.nome}
-      </h2>
-      
+      <div className="servico-form-header">
+        <h2 className="servico-form-title">
+          {servicoEditando ? 'Editar Serviço' : 'Salvar Serviço'} para {cliente.nome}
+        </h2>
+        <button
+          type="button"
+          onClick={onCancel}
+          className="btn-fechar-top"
+          aria-label="Fechar"
+        >
+          ✕
+        </button>
+      </div>
       <form onSubmit={handleSubmit} className="servico-form">
-        <div className="form-group">
-          <label className="form-label">Tipo de Serviço*</label>
-          <select
-            name="tipo"
-            value={servico.tipo}
-            onChange={handleChange}
-            className="form-select"
-            required
-          >
-            {TIPOS_SERVICO.map(tipo => (
-              <option key={tipo} value={tipo}>{tipo}</option>
-            ))}
-          </select>
-        </div>
+        {servico.servicosSelecionados.map((s, index) => (
+          <div key={index} className="form-row gap-4">
+            <div className="form-group grow">
+              <label className="form-label">Tipo*</label>
+              <select
+                value={s.tipo}
+                onChange={(e) => handleServicoChange(index, 'tipo', e.target.value)}
+                className="form-select"
+              >
+                {TIPOS_SERVICO.map(tipo => (
+                  <option key={tipo} value={tipo}>{tipo}</option>
+                ))}
+              </select>
+            </div>
+            <div className="form-group w-28">
+              <label className="form-label">Valor*</label>
+              <input
+                type="number"
+                value={s.valor}
+                step="0.01"
+                min="0"
+                onChange={(e) => handleServicoChange(index, 'valor', e.target.value)}
+                className="form-input"
+              />
+            </div>
+          </div>
+        ))}
+
+        <button type="button" className="submit-button my-2" onClick={adicionarServico}>
+          + Adicionar Tipo
+        </button>
 
         <div className="form-row">
           <div className="form-group">
@@ -137,24 +186,6 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
         </div>
 
         <div className="form-group">
-          <label className="form-label">Valor (R$)*</label>
-          <div className="input-with-icon">
-            <span className="input-icon">R$</span>
-            <input
-              type="number"
-              step="0.01"
-              min="0"
-              name="valor"
-              value={servico.valor}
-              onChange={handleChange}
-              className="form-input"
-              placeholder="0,00"
-              required
-            />
-          </div>
-        </div>
-
-        <div className="form-group">
           <label className="form-label">Status</label>
           <select
             name="status"
@@ -181,21 +212,16 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
           <p className="form-hint">Opcional</p>
         </div>
 
+        <div className="form-group">
+          <strong>Total: </strong>
+          R$ {servico.servicosSelecionados.reduce((soma, s) => soma + s.valor, 0).toFixed(2)}
+        </div>
+
         <div className="form-actions">
-          <button
-            type="button"
-            onClick={onCancel}
-            disabled={loading}
-            className="cancel-button"
-          >
+          <button type="button" onClick={onCancel} disabled={loading} className="cancel-button">
             Cancelar
           </button>
-          
-          <button
-            type="submit"
-            disabled={loading}
-            className={`submit-button ${loading ? 'loading' : ''}`}
-          >
+          <button type="submit" disabled={loading} className={`submit-button ${loading ? 'loading' : ''}`}>
             {loading ? 'Salvando...' : servicoEditando ? 'Atualizar' : 'Salvar'}
           </button>
         </div>

@@ -36,3 +36,28 @@ Hospedado na Netlify: Acesse aqui
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+
+
+
+
+
+
+      {/* {servicoSelecionado && (
+        <div className="servico-popup">
+          <div className="servico-popup-content">
+            <h2>Detalhes do Serviço</h2>
+            <p><strong>Cliente:</strong> {servicoSelecionado.clienteNome}</p>
+            <p><strong>Serviço:</strong> {servicoSelecionado.tipo}</p>
+            <p><strong>Data:</strong> {servicoSelecionado.dataFormatada || 'Data não informada'}</p>
+            <p><strong>Horário:</strong> {servicoSelecionado.horario || 'Não informado'}</p>
+            <p><strong>Valor:</strong> {servicoSelecionado.valor?.toLocaleString('pt-BR', {
+              style: 'currency',
+              currency: 'BRL'
+            }) || 'R$ 0,00'}</p>
+            <p><strong>Status:</strong> {servicoSelecionado.status || 'Indefinido'}</p>
+            <p><strong>Observações:</strong> {servicoSelecionado.observacoes || 'Nenhuma'}</p>
+            <button className='btn-fechar' onClick={() => setServicoSelecionado(null)}>Fechar</button>
+          </div>
+        </div>
+      )} */}

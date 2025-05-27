@@ -14,6 +14,13 @@
   box-sizing: border-box;
 }
 
+.servico-search-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+
+}
+
 .servico-list {
   margin-top: 10px;
   border: 1px solid #ddd;
@@ -82,5 +89,28 @@ p {
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
 
+
+/* Estilo dos cards de serviços */
+.servico-card {
+  background-color: #f9f9f9;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e2e2e2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.servico-card:hover {
+  transform: scale(1.02);
+}
+
+.servico-card p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.servico-card strong {
+  font-weight: 600;
 }

@@ -56,7 +56,7 @@
   padding: 0.75rem 1rem;
   background-color: #fff;
   color: #1d4ed8;
-  border: 1px solid #d1d5db;
+  border: 1px solid #e2e8f0;
   border-radius: 0.5rem;
   font-size: 1rem;
   outline: none;
@@ -64,7 +64,9 @@
 }
 
 .client-search-input:focus {
-  border-color: #2563eb;
+  outline: none;
+  border-color: #4491ef;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
 }
 
 /* Lista de clientes */

@@ -101,14 +101,15 @@
 }
 
 .search-input {
-  color: #0b0f52;
-  background-color: #f4f6f8;
   width: 100%;
-  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  padding: 0.75rem 1rem;
+  background-color: #fff;
+  color: #1d4ed8;
   border: 1px solid #e2e8f0;
-  border-radius: 0.75rem;
+  border-radius: 0.5rem;
   font-size: 1rem;
-  transition: all 0.3s ease;
+  outline: none;
+  transition: border-color 0.3s;
 }
 
 .search-input:focus {
