@@ -127,7 +127,7 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
         {servico.servicosSelecionados.map((s, index) => (
           <div key={index} className="form-row gap-4">
             <div className="form-group grow">
-              <label className="form-label">Tipo*</label>
+              <label className="form-label">Serviço*</label>
               <select
                 value={s.tipo}
                 onChange={(e) => handleServicoChange(index, 'tipo', e.target.value)}
@@ -153,7 +153,7 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
         ))}
 
         <button type="button" className="submit-button my-2" onClick={adicionarServico}>
-          + Adicionar Tipo
+          + Adicionar Serviço
         </button>
 
         <div className="form-row">
