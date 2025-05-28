@@ -129,7 +129,8 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
             <div className="form-group grow">
               <label className="form-label">Serviço*</label>
               <select
-                value={s.tipo}
+                value={s.valor === 0 ? '' : s.valor}
+                placeholder="R$ 0,00"
                 onChange={(e) => handleServicoChange(index, 'tipo', e.target.value)}
                 className="form-select"
               >
@@ -142,7 +143,8 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
               <label className="form-label">Valor*</label>
               <input
                 type="number"
-                value={s.valor}
+                value={s.valor === 0 ? '' : s.valor}
+                placeholder="R$ 0,00"
                 step="0.01"
                 min="0"
                 onChange={(e) => handleServicoChange(index, 'valor', e.target.value)}
@@ -171,17 +173,21 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
 
           <div className="form-group">
             <label className="form-label">Horário*</label>
-            <select
+            <input
+              type="text"
               name="horario"
+              list="horarios-lista"
               value={servico.horario}
               onChange={handleChange}
-              className="form-select"
+              className="form-input"
               required
-            >
+              placeholder="Ex: 09:30"
+            />
+            <datalist id="horarios-lista">
               {HORARIOS_DISPONIVEIS.map(horario => (
-                <option key={horario} value={horario}>{horario}</option>
+                <option key={horario} value={horario} />
               ))}
-            </select>
+            </datalist>
           </div>
         </div>
 

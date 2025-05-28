@@ -29,7 +29,7 @@
   width: 100%;
 
   margin-left: auto;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   margin-bottom: 2rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid #f3f4f6;
@@ -55,11 +55,15 @@
 }
 }
 
+.div-btn {
+  width: 90%;
+  max-width: 780px;
+}
 
 /* Botão Novo Cliente */
 .new-client-btn {
   margin-bottom: 8px;
-  width: 40%;
+  width: 9rem;
   background: linear-gradient(270deg, #010d3c, #4491ef);
   background-size: 400% 400%;
   animation: gradientMove 8s ease infinite;  color: white;
@@ -92,7 +96,7 @@
 /* Barra de busca */
 .search-container {
   width: 90%;
-  max-width: 600px;
+  max-width: 780px;
   background-color: white;
   border-radius: 1rem;
   padding: 1rem;
@@ -241,7 +245,7 @@
   
   .clients-title {
     text-align: center;
-    font-size: 1.4rem;
+    font-size: 1.1rem;
   }
  
 }

@@ -140,72 +140,72 @@ export default function Clientes({ db, user }) {
           <h1 className="clients-title">Gerenciamento de Clientes</h1>
           <ArrowLeft />
         </div>
-      
-      <button
-        onClick={() => {
-          setClienteEditando(null);
-          setModalAberto(true);
-        }}
-        className="new-client-btn"
-        >
-        + Novo Cliente
-      </button>
-
-    {error && (
-      <div className="clients-error">
-        <p>{error}</p>
-      </div>
-    )}
-
-      <div className="search-container">
-        <div className="relative">
-
-          <input
-            type="text"
-            placeholder="Buscar por nome, telefone ou email..."
-            className="search-input"
-            value={busca}
-            onChange={(e) => setBusca(e.target.value)}
-          />
-        </div>
-      </div>
-
-      <ClienteLista 
-        clientes={clientesFiltrados} 
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-        loading={loading}
-      />
-      {clientesFiltrados.length < clientes.filter(cliente =>
-        cliente.nome.toLowerCase().includes(busca.toLowerCase()) ||
-        (cliente.telefone && cliente.telefone.includes(busca)) ||
-        (cliente.email && cliente.email.toLowerCase().includes(busca.toLowerCase()))
-      ).length && (
-        <div className="text-center mt-4">
+        <div className="div-btn">
           <button
-            className="mostrar-mais"
-            onClick={() => setLimiteExibicao(limiteExibicao + 10)}
-          >
-            Mostrar mais
+            onClick={() => {
+              setClienteEditando(null);
+              setModalAberto(true);
+            }}
+            className="new-client-btn"
+            >
+            + Novo Cliente
           </button>
         </div>
-      )}
+        {error && (
+          <div className="clients-error">
+            <p>{error}</p>
+          </div>
+        )}
 
-      {modalAberto && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <ClienteForm 
-              onSubmit={handleAddCliente} 
-              clienteEditando={clienteEditando}
-              onCancel={() => {
-                setClienteEditando(null);
-                setModalAberto(false);
-              }}
-              loading={loading}
-              />
+        <div className="search-container">
+          <div className="relative">
+
+            <input
+              type="text"
+              placeholder="Buscar por nome, telefone ou email..."
+              className="search-input"
+              value={busca}
+              onChange={(e) => setBusca(e.target.value)}
+            />
           </div>
         </div>
-      )}
+
+        <ClienteLista 
+          clientes={clientesFiltrados} 
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          loading={loading}
+        />
+        {clientesFiltrados.length < clientes.filter(cliente =>
+          cliente.nome.toLowerCase().includes(busca.toLowerCase()) ||
+          (cliente.telefone && cliente.telefone.includes(busca)) ||
+          (cliente.email && cliente.email.toLowerCase().includes(busca.toLowerCase()))
+        ).length && (
+          <div className="text-center mt-4">
+            <button
+              className="mostrar-mais"
+              onClick={() => setLimiteExibicao(limiteExibicao + 10)}
+            >
+              Mostrar mais
+            </button>
+          </div>
+        )}
+
+        {modalAberto && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <ClienteForm 
+                onSubmit={handleAddCliente} 
+                clienteEditando={clienteEditando}
+                onCancel={() => {
+                  setClienteEditando(null);
+                  setModalAberto(false);
+                }}
+                loading={loading}
+                />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

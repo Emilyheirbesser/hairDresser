@@ -1,5 +1,5 @@
 .servico-search-container {
-  margin-top: 20px;
+  margin-top: 0.5;
 }
 
 .servico-search-input {
@@ -7,7 +7,7 @@
   padding: 0.75rem 1rem 0.75rem 1rem;
   border: 1px solid #e2e8f0;
   border-radius: 0.75rem;
-  font-size: 1rem;
+  font-size: 0.8rem;
   transition: all 0.3s ease;
   background-color: #f8fafc;
   color: #0b0f52;

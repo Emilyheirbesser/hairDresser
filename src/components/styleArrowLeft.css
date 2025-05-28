@@ -11,6 +11,7 @@
         background: linear-gradient(to right, #010d3c 0%, #4491ef 100%);
     }
 }
+
 @keyframes gradientMove {
 0% {
     background-position: 0% 50%;
@@ -27,7 +28,7 @@
     border-radius: 0.75rem;
     border: none;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 15px;
     background-color: transparent;
     width: 100px;
     min-width: 50px;
