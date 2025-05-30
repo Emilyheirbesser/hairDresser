@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { db, auth } from "../../firebaseConfig";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, serverTimestamp, query, where, getDocs } from "firebase/firestore";
 import "./clienteFormStyles.css";
 
 export default function ClienteForm({ 
@@ -13,7 +13,7 @@ export default function ClienteForm({
     nome: '',
     telefone: '',
     email: '',
-    observacoes: ''
+    observacoes: '',
   });
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function ClienteForm({
         nome: clienteEditando.nome || '',
         telefone: clienteEditando.telefone || '',
         email: clienteEditando.email || '',
-        observacoes: clienteEditando.observacoes || ''
+        observacoes: clienteEditando.observacoes || '',
       });
     } else {
       setCliente({
@@ -63,7 +63,14 @@ export default function ClienteForm({
         return;
       }
 
-      onSubmit(cliente);
+      const clienteFormatado = {
+        ...cliente,
+        nome: cliente.nome.trim(),
+        uid: user.uid,
+        ...(clienteEditando ? {} : { criadoEm: serverTimestamp() }) // ✅ só adiciona se for novo
+      };
+
+      onSubmit(clienteFormatado);
     } catch (error) {
       console.error("Erro ao verificar nome:", error);
       alert("Erro ao verificar nome do cliente.");

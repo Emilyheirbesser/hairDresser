@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { serverTimestamp } from 'firebase/firestore';
 import './ServicoForm.css'; 
 
 const TIPOS_SERVICO = [
@@ -28,7 +29,7 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
     horario: '09:00',
     servicosSelecionados: [{ tipo: TIPOS_SERVICO[0], valor: 0 }],
     observacoes: '',
-    status: 'agendado'
+    status: 'agendado',
   });
 
   // Função para formatar a data corretamente
@@ -102,7 +103,8 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
       data: `${servico.data}T00:00:00`,
       horario: servico.horario,
       observacoes: servico.observacoes,
-      status: servico.status
+      status: servico.status,
+      criadoEm: serverTimestamp()
     };
 
     onSubmit(servicoFormatado);

@@ -168,17 +168,21 @@ export default function Home() {
           {mostrarGrafico && (
             <div className="grafico-section">
               <h3>Evolução Mensal</h3>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={dadosMensais}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="mes" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="clientes" stroke="#8884d8" name="Clientes" />
-                  <Line type="monotone" dataKey="servicos" stroke="#82ca9d" name="Serviços" />
-                </LineChart>
-              </ResponsiveContainer>
+              {dadosMensais.length === 0 ? (
+                <p>Gráfico em manutenção.</p>
+              ) : (
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={dadosMensais}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="mes" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="clientes" stroke="#8884d8" name="Clientes" />
+                    <Line type="monotone" dataKey="servicos" stroke="#82ca9d" name="Serviços" />
+                  </LineChart>
+                </ResponsiveContainer>
+              )}
             </div>
           )}
 

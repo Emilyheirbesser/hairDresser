@@ -77,7 +77,9 @@ export default function Clientes({ db, user }) {
   const handleAddCliente = async (novoCliente) => {
     try {
       setLoading(true);
-      const clienteComUid = { ...novoCliente, uid };
+      const clienteComUid = clienteEditando
+        ? { ...novoCliente, uid } // atualiza mantendo os campos existentes
+        : { ...novoCliente, uid, criadoEm: novoCliente.criadoEm }; // preserva timestamp original se vier do form
 
       if (clienteEditando) {
         await updateDoc(doc(db, 'clientes', clienteEditando.id), clienteComUid);
