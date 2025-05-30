@@ -77,11 +77,10 @@ export default function ServicoPesquisa({ servicos }) {
                 setServicoEmFoco(null);
               }}>Fechar</button>
             </div>
-            <div className="col-span-2">
+            <div className="servico-card">
               {servicoEmFoco && (
-                <div>
+                <div className='serv-selecionado'>
                   <p><strong>Cliente:</strong> {servicoEmFoco.clienteNome}</p>
-
                   <p><strong>Serviço:</strong></p>
                   <ul className="pl-4 list-disc">
                     {Array.isArray(servicoEmFoco.tipos) ? (
@@ -102,9 +101,7 @@ export default function ServicoPesquisa({ servicos }) {
                       </li>
                     )}
                   </ul>
-
                   <p><strong>Horário:</strong> {servicoEmFoco.horario || 'Não informado'}</p>
-
                   <p><strong>Valor Total:</strong> {
                     (Array.isArray(servicoEmFoco.tipos)
                       ? servicoEmFoco.tipos.reduce((total, t) => total + parseFloat(t.valor || 0), 0)
@@ -123,19 +120,18 @@ export default function ServicoPesquisa({ servicos }) {
 
             <div className="popup-body grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="servico-card">
-                <h3 className="font-bold mb-2">Outros Serviços</h3>
+                <h3 className="servico-card-title">Outros Serviços</h3>
                 {servicosDaData.map(s => (
                   <div
                     key={`${s.id}-${s.horario}`}
-                    className={`cursor-pointer p-1 rounded ${s.id === servicoEmFoco?.id ? 'bg-blue-100' : 'hover:bg-gray-100'}`}
+                    className={`servico-item ${s.id === servicoEmFoco?.id ? 'servico-item-ativo' : ''}`}
                     onClick={() => setServicoEmFoco(s)}
                   >
-                    <p>{s.clienteNome}</p>
-                    <small>{s.horario || 'Horário indefinido'}</small>
+                    <p className="servico-cliente">{s.clienteNome}</p>
+                    <small className="servico-horario">{s.horario || 'Horário indefinido'}</small>
                   </div>
                 ))}
               </div>
-
             </div>
           </div>
         </div>

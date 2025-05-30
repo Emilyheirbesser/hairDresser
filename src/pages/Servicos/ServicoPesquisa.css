@@ -33,7 +33,7 @@
   color: #0b0f52;
   font-weight: 600;
   font-size: 0.95rem;
-  padding: 10px;
+  padding: 0.5rem;
   cursor: pointer;
   border-bottom: 1px solid #eee;
 }
@@ -46,6 +46,7 @@
   text-align: center;
   color: #777;
 }
+
 
 .servico-popup {
   position: fixed;
@@ -62,23 +63,35 @@
 .servico-popup-content {
   color: #0b0f52;
   background: white;
-  padding: 20px;
+  padding: 1.2rem;
   border-radius: 12px;
   width: 90%;
   max-width: 400px;
 }
 
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
 h2 {
-  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 19px;
+}
+
+.serv-selecionado {
+  display: flex;
+  flex-direction: column;
 }
 
 p {
-  margin-bottom: 0.2rem;
+  font-size: 14px;
 }
 
 .btn-fechar {
   height: 2rem;
-  margin-top: 0.5rem;
   background: linear-gradient(270deg, #010d3c, #4491ef);
   background-size: 400% 400%;
   animation: gradientMove 8s ease infinite;  color: white;
@@ -95,7 +108,7 @@ p {
 /* Estilo dos cards de serviços */
 .servico-card {
   background-color: #f9f9f9;
-  padding: 16px;
+  padding: 0.5rem;
   border-radius: 8px;
   border: 1px solid #e2e2e2;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
@@ -106,8 +119,8 @@ p {
   transform: scale(1.02);
 }
 
-.servico-card p {
-  margin: 4px 0;
+.servico-card {
+  margin-top: 0.5rem;
   font-size: 14px;
 }
 

@@ -239,7 +239,7 @@ export default function Servicos({ db }) {
         <div className="services-grid">
           <div container-client-search>
             <div className="client-search-container">
-              <p> Pesquise o cliente para a inclusão do serviço:</p>
+              <p className='text-pesq'> Pesquise o cliente para a inclusão do serviço:</p>
               <input
                 type="text"
                 placeholder="Buscar cliente por nome ou telefone"
@@ -288,7 +288,7 @@ export default function Servicos({ db }) {
           </div>
 
           <div className="services-list-container">
-            <p>
+            <p className='text-pesq'>
               Pesquise aqui os serviços já salvos!
             </p>
             <ServicoPesquisa servicos={todosServicos} />
