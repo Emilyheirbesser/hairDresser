@@ -83,23 +83,31 @@ export default function ServicoPesquisa({ servicos }) {
                   <p><strong>Cliente:</strong> {servicoEmFoco.clienteNome}</p>
                   <p><strong>Serviço:</strong></p>
                   <ul className="pl-4 list-disc">
-                    {Array.isArray(servicoEmFoco.tipos) ? (
-                      servicoEmFoco.tipos.map((tipo, index) => (
-                        <li key={index}>
-                          {tipo.tipo} - {parseFloat(tipo.valor || 0).toLocaleString('pt-BR', {
+                    {servicoEmFoco.tipos.map((tipo, index) => (
+                      <li key={index} className="mb-1">
+                        <span>{tipo.tipo}</span> -{' '}
+                        <span>
+                          {parseFloat(tipo.valor || 0).toLocaleString('pt-BR', {
                             style: 'currency',
                             currency: 'BRL'
                           })}
-                        </li>
-                      ))
-                    ) : (
-                      <li>
-                        {servicoEmFoco.tipo || 'Não informado'} - {parseFloat(servicoEmFoco.valor || 0).toLocaleString('pt-BR', {
-                          style: 'currency',
-                          currency: 'BRL'
-                        })}
+                        </span>
+                        {tipo.cor && (
+                          <>
+                            {' '}
+                            - <span className="font-semibold"><strong>Cor:</strong></span>{' '}
+                            <span
+                              className="inline-block ml-1 px-2 py-0.5 text-xs rounded"
+                              style={{
+                                backgroundColor: tipo.cor,
+                              }}
+                            >
+                              {tipo.cor}
+                            </span>
+                          </>
+                        )}
                       </li>
-                    )}
+                    ))}
                   </ul>
                   <p><strong>Horário:</strong> {servicoEmFoco.horario || 'Não informado'}</p>
                   <p><strong>Valor Total:</strong> {

@@ -27,7 +27,7 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
     tipo: TIPOS_SERVICO[0],
     data: formatDate(new Date()),
     horario: '09:00',
-    servicosSelecionados: [{ tipo: TIPOS_SERVICO[0], valor: 0 }],
+    servicosSelecionados: [{ tipo: TIPOS_SERVICO[0], valor: 0, cor: '' }],
     observacoes: '',
     status: 'agendado',
   });
@@ -74,7 +74,11 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
   const handleServicoChange = (index, field, value) => {
     setServico(prev => {
       const novos = [...prev.servicosSelecionados];
-      novos[index][field] = field === 'valor' ? parseFloat(value) || 0 : value;
+      if (field === 'valor') {
+        novos[index][field] = parseFloat(value) || 0;
+      } else {
+        novos[index][field] = value;
+      }
       return { ...prev, servicosSelecionados: novos };
     });
   };
@@ -82,7 +86,7 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
   const adicionarServico = () => {
     setServico(prev => ({
       ...prev,
-      servicosSelecionados: [...prev.servicosSelecionados, { tipo: TIPOS_SERVICO[0], valor: 0 }]
+      servicosSelecionados: [...prev.servicosSelecionados, { tipo: "", valor: 0 }]
     }));
   };
 
@@ -129,17 +133,17 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
         {servico.servicosSelecionados.map((s, index) => (
           <div key={index} className="form-row gap-4">
             <div className="form-group grow">
-              <label className="form-label">Serviço*</label>
-              <select
-                value={s.valor === 0 ? '' : s.valor}
-                placeholder="R$ 0,00"
-                onChange={(e) => handleServicoChange(index, 'tipo', e.target.value)}
-                className="form-select"
-              >
-                {TIPOS_SERVICO.map(tipo => (
-                  <option key={tipo} value={tipo}>{tipo}</option>
-                ))}
-              </select>
+            <label className="form-label">Serviço*</label>
+            <select
+              value={s.tipo}
+              onChange={(e) => handleServicoChange(index, 'tipo', e.target.value)}
+              className="form-select"
+            >
+              <option value="" disabled>Selecione um tipo</option>
+              {TIPOS_SERVICO.map(tipo => (
+                <option key={tipo} value={tipo}>{tipo}</option>
+              ))}
+            </select>
             </div>
             <div className="form-group w-28">
               <label className="form-label">Valor*</label>
@@ -153,6 +157,18 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
                 className="form-input"
               />
             </div>
+            {['Coloração', 'Tonalizante'].includes(s.tipo) && (
+              <div className="form-group">
+                <label className="form-label">Cor</label>
+                <input
+                  type="text"
+                  value={s.cor || ''}
+                  placeholder="Ex: Castanho claro"
+                  onChange={(e) => handleServicoChange(index, 'cor', e.target.value)}
+                  className="form-input"
+                />
+              </div>
+            )}
           </div>
         ))}
 

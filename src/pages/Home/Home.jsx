@@ -15,8 +15,8 @@ export default function Home() {
   const [warningTimer, setWarningTimer] = useState(null);
   const [logoutTimer, setLogoutTimer] = useState(null);
   const [userName, setUserName] = useState("");
-  const [totalClientes, setTotalClientes] = useState(0);
-  const [totalServicos, setTotalServicos] = useState(0);
+  // const [totalClientes, setTotalClientes] = useState(0);
+  // const [totalServicos, setTotalServicos] = useState(0);
 
   const navigate = useNavigate();
   const [dadosMensais, setDadosMensais] = useState([]);
@@ -81,8 +81,6 @@ export default function Home() {
 
     fetchDados();
   }, []);
-
-
 
   const handleLogout = async () => {
     try {
@@ -185,7 +183,6 @@ export default function Home() {
               )}
             </div>
           )}
-
         </div>
       </div>
     </div>
