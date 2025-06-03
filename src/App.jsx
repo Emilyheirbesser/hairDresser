@@ -7,6 +7,7 @@ import Home from "./pages/Home/Home";
 import Clientes from "./pages/Clientes";
 import Servicos from "./pages/Servicos";
 import Perfil from "./pages/Perfil/Perfil";
+import CalculoServicos from "./pages/Calculo";
 import Loading from "./components/Loading";
 
 function App() {
@@ -64,6 +65,7 @@ function App() {
             <Route path="/clientes" element={<Clientes db={db} user={user} />} />
             <Route path="/servicos" element={<Servicos db={db} user={user}/>} />
             <Route path="/perfil" element={<Perfil db={db} user={user} />} />
+            <Route path="/calculos" element={<CalculoServicos db={db} user={user} />} />
             <Route path="/" element={<Navigate to="/home" replace />} />
             <Route path="*" element={<Navigate to="/home" replace />} />
           </>

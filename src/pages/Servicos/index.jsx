@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { getAuth } from 'firebase/auth';
 import {
   doc, collection, getDocs, addDoc, query,
   orderBy, limit, startAfter, deleteDoc,
@@ -13,8 +14,6 @@ import ServicoLista from './ServicoLista';
 import 'react-toastify/dist/ReactToastify.css';
 import "./style.css";
 
-// Supondo que você esteja usando Auth Context
-import { getAuth } from 'firebase/auth';
 
 export default function Servicos({ db }) {
   const auth = getAuth();

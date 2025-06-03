@@ -4,7 +4,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
 import { FiHome, FiUsers, FiLogOut, FiUser } from 'react-icons/fi';
 import { FaTools } from "react-icons/fa";
-
+import { HiOutlineCalculator } from "react-icons/hi"
 import './HamburgerStyles.css';
 
 export function HamburgerMenu() {
@@ -72,6 +72,16 @@ export function HamburgerMenu() {
               >
                 <FaTools />
                 Atendimentos
+              </button>
+            </li>
+
+            <li className="menu-item">
+              <button 
+                onClick={() => handleNavigation('/calculos')} 
+                className="menu-link flex items-center gap-2"
+              >
+                <HiOutlineCalculator />
+                Calculo
               </button>
             </li>
 
