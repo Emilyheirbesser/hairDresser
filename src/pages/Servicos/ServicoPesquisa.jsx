@@ -79,37 +79,63 @@ export default function ServicoPesquisa({ servicos }) {
             </div>
             <div className="servico-card">
               {servicoEmFoco && (
-                <div className='serv-selecionado'>
-                  <p><strong>Cliente:</strong> {servicoEmFoco.clienteNome}</p>
+                <div className="serv-selecionado">
+                  <p><strong>Cliente:</strong> {servicoEmFoco.clienteNome || 'Não informado'}</p>
+
                   <p><strong>Serviço:</strong></p>
                   <ul className="pl-4 list-disc">
-                    {servicoEmFoco.tipos.map((tipo, index) => (
-                      <li key={index} className="mb-1">
-                        <span>{tipo.tipo}</span> -{' '}
-                        <span>
-                          {parseFloat(tipo.valor || 0).toLocaleString('pt-BR', {
-                            style: 'currency',
-                            currency: 'BRL'
-                          })}
-                        </span>
-                        {tipo.cor && (
+                    {Array.isArray(servicoEmFoco.tipos) ? (
+                      servicoEmFoco.tipos.map((tipo, index) => (
+                        <li key={index} className="mb-1">
+                          <span>{tipo.tipo || 'Tipo não informado'}</span> -{' '}
+                          <span>
+                            {parseFloat(tipo.valor || 0).toLocaleString('pt-BR', {
+                              style: 'currency',
+                              currency: 'BRL'
+                            })}
+                          </span>
+                          {tipo.cor && (
+                            <>
+                              {' '} - <span className="font-semibold"><strong>Cor:</strong></span>{' '}
+                              <span
+                                className="inline-block ml-1 px-2 py-0.5 text-xs rounded"
+                                style={{
+                                  backgroundColor: tipo.cor,
+                                }}
+                              >
+                                {tipo.cor}
+                              </span>
+                            </>
+                          )}
+                        </li>
+                      ))
+                    ) : (
+                      <li>
+                        {servicoEmFoco.tipo || 'Tipo não informado'} -{' '}
+                        {parseFloat(servicoEmFoco.valor || 0).toLocaleString('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL'
+                        })}
+                        {servicoEmFoco.cor && (
                           <>
-                            {' '}
-                            - <span className="font-semibold"><strong>Cor:</strong></span>{' '}
+                            {' '} - <span className="font-semibold"><strong>Cor:</strong></span>{' '}
                             <span
                               className="inline-block ml-1 px-2 py-0.5 text-xs rounded"
                               style={{
-                                backgroundColor: tipo.cor,
+                                backgroundColor: servicoEmFoco.cor,
+                                color: '#fff'
                               }}
                             >
-                              {tipo.cor}
+                              {servicoEmFoco.cor}
                             </span>
                           </>
                         )}
                       </li>
-                    ))}
+                    )}
                   </ul>
+
                   <p><strong>Horário:</strong> {servicoEmFoco.horario || 'Não informado'}</p>
+
                   <p><strong>Valor Total:</strong> {
                     (Array.isArray(servicoEmFoco.tipos)
                       ? servicoEmFoco.tipos.reduce((total, t) => total + parseFloat(t.valor || 0), 0)
@@ -124,6 +150,7 @@ export default function ServicoPesquisa({ servicos }) {
                   <p><strong>Observações:</strong> {servicoEmFoco.observacoes || 'Nenhuma'}</p>
                 </div>
               )}
+
             </div>
 
             <div className="popup-body grid grid-cols-1 md:grid-cols-3 gap-4">

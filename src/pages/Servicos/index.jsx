@@ -236,7 +236,7 @@ export default function Servicos({ db }) {
         )}
 
         <div className="services-grid">
-          <div container-client-search>
+          <div className="container-client-search">
             <div className="client-search-container">
               <p className='text-pesq'> Pesquise o cliente para a inclusão do serviço:</p>
               <input
