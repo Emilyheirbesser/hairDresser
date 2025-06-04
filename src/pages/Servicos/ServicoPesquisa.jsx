@@ -82,21 +82,24 @@ export default function ServicoPesquisa({ servicos }) {
                 <div className="serv-selecionado">
                   <p><strong>Cliente:</strong> {servicoEmFoco.clienteNome || 'Não informado'}</p>
 
-                  <p><strong>Serviço:</strong></p>
+                  <p className='p-servico'><strong>Serviço:</strong></p>
                   <ul className="pl-4 list-disc">
                     {Array.isArray(servicoEmFoco.tipos) ? (
                       servicoEmFoco.tipos.map((tipo, index) => (
-                        <li key={index} className="mb-1">
-                          <span>{tipo.tipo || 'Tipo não informado'}</span> -{' '}
-                          <span>
-                            {parseFloat(tipo.valor || 0).toLocaleString('pt-BR', {
-                              style: 'currency',
-                              currency: 'BRL'
-                            })}
-                          </span>
+                        <li key={index} className="li-servico mb-1">
+                          <div>
+                            <span>{tipo.tipo || 'Tipo não informado'}</span> -{' '}
+                            <span>
+                              {parseFloat(tipo.valor || 0).toLocaleString('pt-BR', {
+                                style: 'currency',
+                                currency: 'BRL'
+                              })}
+                            </span>
+                          </div>
+
                           {tipo.cor && (
-                            <>
-                              {' '} - <span className="font-semibold"><strong>Cor:</strong></span>{' '}
+                            <div className="c-cor">
+                              {' '}  <span className="span-cor font-semibold"><strong> </strong></span>{' '}
                               <span
                                 className="inline-block ml-1 px-2 py-0.5 text-xs rounded"
                                 style={{
@@ -105,7 +108,7 @@ export default function ServicoPesquisa({ servicos }) {
                               >
                                 {tipo.cor}
                               </span>
-                            </>
+                            </div>
                           )}
                         </li>
                       ))
@@ -117,24 +120,23 @@ export default function ServicoPesquisa({ servicos }) {
                           currency: 'BRL'
                         })}
                         {servicoEmFoco.cor && (
-                          <>
-                            {' '} - <span className="font-semibold"><strong>Cor:</strong></span>{' '}
+                          <div className='no-informe'>
+                            {' '} - <span className="font-semibold">Cor:</span>{' '}
                             <span
-                              className="inline-block ml-1 px-2 py-0.5 text-xs rounded"
+                              className="no-informe"
                               style={{
                                 backgroundColor: servicoEmFoco.cor,
-                                color: '#fff'
                               }}
                             >
                               {servicoEmFoco.cor}
                             </span>
-                          </>
+                          </div>
                         )}
                       </li>
                     )}
                   </ul>
 
-                  <p><strong>Horário:</strong> {servicoEmFoco.horario || 'Não informado'}</p>
+                  <p className='p-horario'><strong>Horário:</strong> {servicoEmFoco.horario || 'Não informado'}</p>
 
                   <p><strong>Valor Total:</strong> {
                     (Array.isArray(servicoEmFoco.tipos)

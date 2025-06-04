@@ -119,6 +119,17 @@ p {
   transform: scale(1.02);
 }
 
+.li-servico{
+  margin-left: 1rem;
+}
+
+.c-cor {
+  margin-left: 0.5rem;
+}
+
+.p-horario, .p-servico {
+  margin-top: 0.5rem;
+}
 .servico-card {
   margin-top: 0.5rem;
   font-size: 14px;
