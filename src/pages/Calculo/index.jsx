@@ -1,45 +1,85 @@
-// pages/CalculoServicos.jsx
-import { useEffect, useState } from 'react';
-import { db } from '../../firebaseConfig';
+// src/pages/Calculo/index.jsx
+import { useReducer, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
-import { ArrowLeft } from '../../components/ArrowLeft.jsx';
 import * as XLSX from 'xlsx';
+import { db } from '../../firebaseConfig';
+import { ArrowLeft } from '../../components/ArrowLeft';
 import "./calculoStyles.css";
 
+// Configuração inicial do estado
+const initialState = {
+  dataInicio: '',
+  dataFim: '',
+  servicos: [],
+  servicosFiltrados: [],
+  statusFiltro: '',
+  erro: '',
+  carregando: false
+};
+
+// Função reducer para gerenciar o estado
+function reducer(state, action) {
+  switch (action.type) {
+    case 'SET_FILTROS':
+      return { ...state, ...action.payload };
+    case 'SET_SERVICOS':
+      return { ...state, servicos: action.payload, carregando: false };
+    case 'SET_FILTRADOS':
+      return { ...state, servicosFiltrados: action.payload };
+    case 'SET_ERRO':
+      return { ...state, erro: action.payload };
+    case 'SET_CARREGANDO':
+      return { ...state, carregando: action.payload };
+    default:
+      return state;
+  }
+}
 
 export default function CalculoServicos() {
-  const [dataInicio, setDataInicio] = useState('');
-  const [dataFim, setDataFim] = useState('');
-  const [servicos, setServicos] = useState([]);
-  const [servicosFiltrados, setServicosFiltrados] = useState([]);
-  const [statusFiltro, setStatusFiltro] = useState('');
-  const [erro, setErro] = useState('');
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { dataInicio, dataFim, servicos, servicosFiltrados, statusFiltro, erro, carregando } = state;
 
+  // Buscar serviços do Firebase
   useEffect(() => {
-    async function fetchServicos() {
+    const fetchServicos = async () => {
+      dispatch({ type: 'SET_CARREGANDO', payload: true });
       try {
         const snapshot = await getDocs(collection(db, 'servicos'));
-        const lista = snapshot.docs.map(doc => ({ 
-          id: doc.id, 
-          ...doc.data(),
-          // Garante que a data seja um objeto Date para filtragem
-          data: doc.data().data ? new Date(doc.data().data) : null,
-          // Formata a data para exibição
-          dataFormatada: doc.data().data ? new Date(doc.data().data).toLocaleDateString('pt-BR') : 'Sem data'
-        }));
-        setServicos(lista);
+        const lista = snapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            ...data,
+            data: data.data ? new Date(data.data) : null,
+            dataFormatada: data.data ? new Date(data.data).toLocaleDateString('pt-BR') : 'Sem data'
+          };
+        });
+        dispatch({ type: 'SET_SERVICOS', payload: lista });
       } catch (error) {
         console.error("Erro ao buscar serviços:", error);
-        setErro("Erro ao carregar serviços");
+        dispatch({ type: 'SET_ERRO', payload: "Erro ao carregar serviços" });
       }
-    }
+    };
 
     fetchServicos();
   }, []);
 
+  // Calcular valor do serviço
+  const calcularValorServico = (servico) => {
+    if (servico.tipos?.length) {
+      return servico.tipos.reduce((total, tipo) => {
+        const valor = typeof tipo.valor === 'string' ? parseFloat(tipo.valor) : tipo.valor || 0;
+        return total + valor;
+      }, 0);
+    }
+    const valor = typeof servico.valor === 'string' ? parseFloat(servico.valor) : servico.valor || 0;
+    return valor;
+  };
+
+  // Filtrar serviços
   const filtrarServicos = () => {
     if (!dataInicio || !dataFim) {
-      setErro("Por favor, selecione ambas as datas");
+      dispatch({ type: 'SET_ERRO', payload: "Por favor, selecione ambas as datas" });
       return;
     }
 
@@ -47,48 +87,43 @@ export default function CalculoServicos() {
     const fim = new Date(dataFim);
 
     if (inicio > fim) {
-      setErro("A data de início deve ser anterior à data de fim");
+      dispatch({ type: 'SET_ERRO', payload: "A data de início deve ser anterior à data de fim" });
       return;
     }
 
-    setErro('');
+    dispatch({ type: 'SET_ERRO', payload: '' });
 
     const filtrados = servicos.filter(s => {
       if (!s.data) return false;
       
-      const dataServico = new Date(s.data);
+      const dataServico = s.data;
       const dentroDoPeriodo = dataServico >= inicio && dataServico <= fim;
       const statusCond = statusFiltro ? s.status === statusFiltro : true;
       return dentroDoPeriodo && statusCond;
     });
 
-    setServicosFiltrados(filtrados);
+    dispatch({ type: 'SET_FILTRADOS', payload: filtrados });
   };
 
-  const calcularValorServico = (servico) => {
-    if (Array.isArray(servico.tipos)) {
-      return servico.tipos.reduce((total, tipo) => total + parseFloat(tipo.valor || 0), 0);
-    }
-    return parseFloat(servico.valor || 0);
-  };
-
+  // Calcular total
   const total = servicosFiltrados.reduce((soma, servico) => {
     return soma + calcularValorServico(servico);
   }, 0);
 
+  // Exportar para Excel
   const exportarExcel = () => {
     if (servicosFiltrados.length === 0) {
-      setErro("Nenhum serviço para exportar");
+      dispatch({ type: 'SET_ERRO', payload: "Nenhum serviço para exportar" });
       return;
     }
 
     const dados = servicosFiltrados.map(s => ({
       Cliente: s.clienteNome,
       Data: s.dataFormatada,
-      Horario: s.horario,
-      Status: s.status,
-      Observacoes: s.observacoes,
-      Tipos: Array.isArray(s.tipos)
+      Horario: s.horario || '',
+      Status: s.status || '',
+      Observacoes: s.observacoes || '',
+      Tipos: s.tipos?.length
         ? s.tipos.map(t => `${t.tipo} (${t.valor})`).join(', ')
         : `${s.tipo} (${s.valor})`,
       ValorTotal: calcularValorServico(s)
@@ -100,20 +135,22 @@ export default function CalculoServicos() {
     XLSX.writeFile(wb, 'relatorio-servicos.xlsx');
   };
 
-
   return (
     <div className="calculo-container">
       <div className="calculo-header">  
-         <h1 className="text-2xl font-bold mb-4">Cálculo de Serviços</h1>
-         <ArrowLeft />
+        <h1 className="text-2xl font-bold mb-4">Cálculo de Serviços</h1>
+        <ArrowLeft />
       </div>  
+
+      {erro && <div className="erro-message">{erro}</div>}
+
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div>
           <label className="block text-sm font-medium text-gray-700">Data Início</label>
           <input
             type="date"
             value={dataInicio}
-            onChange={(e) => setDataInicio(e.target.value)}
+            onChange={(e) => dispatch({ type: 'SET_FILTROS', payload: { dataInicio: e.target.value } })}
             className="form-input w-full"
           />
         </div>
@@ -122,7 +159,7 @@ export default function CalculoServicos() {
           <input
             type="date"
             value={dataFim}
-            onChange={(e) => setDataFim(e.target.value)}
+            onChange={(e) => dispatch({ type: 'SET_FILTROS', payload: { dataFim: e.target.value } })}
             className="form-input w-full"
           />
         </div>
@@ -130,7 +167,7 @@ export default function CalculoServicos() {
           <label className="block text-sm font-medium text-gray-700">Status</label>
           <select
             value={statusFiltro}
-            onChange={(e) => setStatusFiltro(e.target.value)}
+            onChange={(e) => dispatch({ type: 'SET_FILTROS', payload: { statusFiltro: e.target.value } })}
             className="form-select w-full"
           >
             <option value="">Todos</option>
@@ -139,35 +176,39 @@ export default function CalculoServicos() {
             <option value="cancelado">Cancelado</option>
           </select>
         </div>
-
         <div className="flex items-end">
           <button
             onClick={filtrarServicos}
             className="btn-primary w-full"
+            disabled={carregando}
           >
-            Buscar
+            {carregando ? 'Carregando...' : 'Buscar'}
           </button>
         </div>
       </div>
 
-      <div className="card-total">
-        <h2 className="text-lg font-semibold mb-2">Total de serviços: {servicosFiltrados.length}</h2>
-        <p className="text-xl font-bold text-green-600">
-          Total: {total.toLocaleString('pt-BR', {
-            style: 'currency',
-            currency: 'BRL'
-          })}
-        </p>
-        <button 
-          onClick={exportarExcel} 
-          className="mt-4 btn-secondary"
-          disabled={servicosFiltrados.length === 0}
-        >
-          Exportar para Excel
-        </button>
-      </div>
+
+      {carregando && <div className="loading-spinner">Carregando...</div>}
 
       {servicosFiltrados.length > 0 && (
+        <>
+        <div className="card-total">
+          <h2 className="text-lg font-semibold mb-2">Total de serviços: {servicosFiltrados.length}</h2>
+          <p className="text-xl font-bold text-green-600">
+            Total: {total.toLocaleString('pt-BR', {
+              style: 'currency',
+              currency: 'BRL'
+            })}
+          </p>
+          <button
+            onClick={exportarExcel} 
+            className="mt-4 btn-secondary"
+            disabled={servicosFiltrados.length === 0 || carregando}
+          >
+            Exportar para Excel
+          </button>
+        </div>
+
         <div className='card-calculo'>
           <h3 className="text-md font-semibold mb-2">Serviços encontrados:</h3>
           <ul>
@@ -183,6 +224,7 @@ export default function CalculoServicos() {
             ))}
           </ul>
         </div>
+      </>
       )}
     </div>
   );

@@ -1,7 +1,16 @@
+
+/* calculoStyles.css */
 .calculo-container {
-    display: flex;
-    flex-direction: column;
-    color: aliceblue;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  color: #f8fafc;
+  background: linear-gradient(135deg, #647288 0%, #c8cfdf 100%);
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
 }
 
 .calculo-header {
@@ -9,28 +18,204 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+
   margin-top: 0.5rem;
-  margin-bottom: 2rem;
-  padding-bottom: 0.5rem;
+  padding-bottom: 1.5rem;
   border-bottom: 1px solid #f3f4f6;
+
 }
 
-h1 {
-      font-size: 1.75rem;
-  font-weight: bold;
+.calculo-header h1 {
+  font-size: 1.70rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #424aee 0%, #0b0f52 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin: 0;
+  white-space: nowrap; /* Impede que o texto quebre em várias linhas */
 }
 
+/* Filtros */
+.grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.form-input, .form-select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #334155;
+  background-color: #47556c;
+  color: #f8fafc;
+  transition: all 0.3s ease;
+}
+
+.form-input:focus, .form-select:focus {
+  outline: none;
+  border-color: #0b0f52;
+  box-shadow: 0 0 0 3px rgba(58, 100, 237, 0.3);
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #0b0f52;
+}
+
+/* Cards */
 .card-total {
-    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(166, 176, 201, 0.7);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 10px 25px -5px rgba(232, 214, 214, 0.2);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
 
+.card-total:hover {
+  transform: translateY(-5px);
+}
+
+.card-total h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+.card-total p {
+  font-weight: bold;
+  font-size: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
 }
 
 .card-calculo {
-  background: rgb(221, 235, 244);
+  background: rgba(221, 235, 244, 0.95);
   border-radius: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   padding: 2rem;
   width: 100%;
   max-width: 56rem;
   color: #0b0f52;
+  transition: all 0.3s ease;
+}
+
+.card-calculo:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+}
+
+h3 {
+  text-align: center;
+  margin-bottom: 12px;
+
+}
+
+/* Botões */
+.btn-primary, .btn-secondary {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background: linear-gradient(270deg, #010d3c, #4491ef);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #6d28d9;
+  transform: translateY(-2px);
+}
+
+.btn-primary:disabled {
+  background-color: #4c1d95;
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  background: linear-gradient(270deg, #010d3c, #4491ef);
+  color: #f8fafc;
+  margin-top: 0.5rem;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(124, 58, 237, 0.1);
+  transform: translateY(-2px);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Lista de serviços */
+.servico-item {
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.servico-item:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Mensagens */
+.erro-message {
+  padding: 1rem;
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #fecaca;
+  border-left: 4px solid #ef4444;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.loading-spinner {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background-color: rgba(124, 58, 237, 0.2);
+  color: #a78bfa;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .calculo-container {
+    padding: 1rem;
+  }
+  
+  .calculo-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
