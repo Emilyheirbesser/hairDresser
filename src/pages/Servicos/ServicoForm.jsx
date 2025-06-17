@@ -34,7 +34,6 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
     status: 'agendado',
   });
 
-  // Função para formatar a data corretamente
   function formatDate(date) {
     const d = new Date(date);
     let month = '' + (d.getMonth() + 1);
@@ -48,10 +47,20 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
   }
 
   useEffect(() => {
+    console.log('[📥] useEffect - servicoEditando:', servicoEditando);
+
     if (servicoEditando) {
-      const dataCorrigida = servicoEditando.data.includes('T')
-        ? servicoEditando.data.split('T')[0]
-        : servicoEditando.data;
+      let dataCorrigida = '';
+
+      if (servicoEditando.data?.toDate) {
+        dataCorrigida = formatDate(servicoEditando.data.toDate());
+        console.log('[📆] Data convertida de Timestamp:', dataCorrigida);
+      } else if (typeof servicoEditando.data === 'string') {
+        dataCorrigida = servicoEditando.data.includes('T')
+          ? servicoEditando.data.split('T')[0]
+          : servicoEditando.data;
+        console.log('[📆] Data convertida de string:', dataCorrigida);
+      }
 
       const tipos = servicoEditando.tipo?.split(',') || [TIPOS_SERVICO[0]];
       const valores = typeof servicoEditando.valor === 'number'
@@ -63,13 +72,16 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
         valor: valores[i] || 0
       }));
 
-      setServico({
+      const novoServico = {
         data: dataCorrigida,
         horario: servicoEditando.horario || '09:00',
         servicosSelecionados,
         observacoes: servicoEditando.observacoes || '',
         status: servicoEditando.status || 'agendado'
-      });
+      };
+
+      console.log('[🧩] Estado ajustado no useEffect:', novoServico);
+      setServico(novoServico);
     }
   }, [cliente, servicoEditando]);
 
@@ -100,18 +112,24 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log('[📅] Data recebida no form:', servico.data);
+    console.log('[📤] handleSubmit iniciado');
+    console.log('[📅] Valor de servico.data antes da conversão:', servico.data);
+    console.log('[⏰] Valor de servico.horario antes da conversão:', servico.horario);
 
     const tipos = servico.servicosSelecionados.map(s => s.tipo).join(', ');
     const valorTotal = servico.servicosSelecionados.reduce((soma, s) => soma + s.valor, 0);
 
     let dataConvertida;
+
     try {
       const [ano, mes, dia] = servico.data.split('-').map(Number);
-      const dataJS = new Date(ano, mes - 1, dia, 0, 0, 0);
-      dataConvertida = Timestamp.fromDate(dataJS);
+      const [hora, minuto] = servico.horario.split(':').map(Number);
+      dataConvertida = new Date(ano, mes - 1, dia, hora, minuto, 0);
+
+      console.log('[⏳] dataConvertida (objeto Date):', dataConvertida.toString());
+      console.log('[🧭] dataConvertida.toISOString:', dataConvertida.toISOString());
     } catch (error) {
-      console.error('[❌] Erro ao converter data:', error, 'Data:', servico.data);
+      console.error('[❌] Erro ao converter data:', error, 'Data recebida:', servico.data);
       return;
     }
 
@@ -119,15 +137,18 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
       tipo: tipos,
       tipos: servico.servicosSelecionados,
       valor: valorTotal,
-      data: dataConvertida,
+      data: Timestamp.fromDate(dataConvertida),
       horario: servico.horario,
       observacoes: servico.observacoes,
       status: servico.status,
       criadoEm: serverTimestamp()
     };
 
+    console.log('[📦] servicoFormatado enviado para onSubmit:', servicoFormatado);
+
     onSubmit(servicoFormatado);
   };
+
 
   return (
     <div className="servico-form-container">

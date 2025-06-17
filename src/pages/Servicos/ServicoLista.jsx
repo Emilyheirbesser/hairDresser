@@ -37,7 +37,11 @@ export default function ServicoLista({ servicos, loading, onEdit, onDelete }) {
             <tr key={servico.id} className="servico-tr">
               <td className="servicos-td">{servico.clienteNome}</td>
               <td className="servicos-td">
-                {(servico.data?.toDate ? servico.data.toDate() : new Date(servico.data)).toLocaleDateString('pt-BR')} às {servico.horario}
+                {(() => {
+                  const data = servico.data;
+                  const dataObj = data?.toDate ? data.toDate() : new Date(data);
+                  return `${dataObj.toLocaleDateString('pt-BR')} às ${servico.horario}`;
+                })()}
               </td>
               <td className="servicos-td">{servico.tipo}</td>
               <td className="servicos-td">

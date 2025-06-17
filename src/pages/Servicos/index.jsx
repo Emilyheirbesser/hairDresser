@@ -149,11 +149,30 @@ export default function Servicos({ db }) {
     try {
       setLoading(true);
 
-        // Cria um objeto Date JavaScript correto (mes é 0-based)
-        const dataJS = new Date();
+      let dataJS;
 
-        // Agora cria o Timestamp do Firestore
-        const dataTimestamp = Timestamp.fromDate(dataJS);      const servicoFormatado = {
+      if (typeof novoServico.data === 'string') {
+        // Se for string 'YYYY-MM-DD'
+        const [ano, mes, dia] = novoServico.data.split('-').map(Number);
+        const [hora, minuto] = novoServico.horario.split(':').map(Number);
+        dataJS = new Date(ano, mes - 1, dia, hora, minuto);
+      } else if (novoServico.data?.toDate) {
+        // Se for Timestamp do Firestore
+        dataJS = novoServico.data.toDate();
+        // Ajustar a hora também:
+        const [hora, minuto] = novoServico.horario.split(':').map(Number);
+        dataJS.setHours(hora, minuto, 0, 0);
+      } else if (novoServico.data instanceof Date) {
+        dataJS = novoServico.data;
+        const [hora, minuto] = novoServico.horario.split(':').map(Number);
+        dataJS.setHours(hora, minuto, 0, 0);
+      } else {
+        throw new Error('Formato inesperado para data');
+      }
+
+      const dataTimestamp = Timestamp.fromDate(dataJS);
+
+      const servicoFormatado = {
         ...novoServico,
         valor: parseFloat(novoServico.valor),
         clienteId: clienteSelecionado.id,
