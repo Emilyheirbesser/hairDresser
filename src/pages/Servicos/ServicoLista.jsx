@@ -24,8 +24,8 @@ export default function ServicoLista({ servicos, loading, onEdit, onDelete }) {
         <thead className="servicos-thead">
           <tr>
             <th className="servicos-th">Cliente</th>
-            <th className="servicos-th">Serviço</th>
             <th className="servicos-th">Data/Horário</th>
+            <th className="servicos-th">Serviço</th>
             <th className="servicos-th">Valor</th>
             <th className="servicos-th">Status</th>
             <th className="servicos-th">Observações</th>
@@ -36,14 +36,14 @@ export default function ServicoLista({ servicos, loading, onEdit, onDelete }) {
           {servicos.map(servico => (
             <tr key={servico.id} className="servico-tr">
               <td className="servicos-td">{servico.clienteNome}</td>
-              <td className="servicos-td">{servico.tipo}</td>
               <td className="servicos-td">
-                {new Date(servico.data).toLocaleDateString('pt-BR')} às {servico.horario}
+                {(servico.data?.toDate ? servico.data.toDate() : new Date(servico.data)).toLocaleDateString('pt-BR')} às {servico.horario}
               </td>
+              <td className="servicos-td">{servico.tipo}</td>
               <td className="servicos-td">
                 {servico.valor.toLocaleString('pt-BR', { 
                   style: 'currency', 
-                  currency: 'BRL' 
+                  currency: 'BRL'
                 })}
               </td>
               <td className="servicos-td">

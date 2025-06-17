@@ -3,7 +3,7 @@ import { getAuth } from 'firebase/auth';
 import {
   doc, collection, getDocs, addDoc, query,
   orderBy, limit, startAfter, deleteDoc,
-  updateDoc, where
+  updateDoc, where, Timestamp
 } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { HamburgerMenu } from '../../components/HamburgerMenu.jsx';
@@ -149,12 +149,16 @@ export default function Servicos({ db }) {
     try {
       setLoading(true);
 
-      const servicoFormatado = {
+        // Cria um objeto Date JavaScript correto (mes é 0-based)
+        const dataJS = new Date();
+
+        // Agora cria o Timestamp do Firestore
+        const dataTimestamp = Timestamp.fromDate(dataJS);      const servicoFormatado = {
         ...novoServico,
         valor: parseFloat(novoServico.valor),
         clienteId: clienteSelecionado.id,
         clienteNome: clienteSelecionado.nome,
-        data: new Date(novoServico.data).toISOString(),
+        data: dataTimestamp,
         uid: uid,
         observacoes: novoServico.observacoes || ''
       };

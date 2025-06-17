@@ -9,6 +9,7 @@ import Servicos from "./pages/Servicos";
 import Perfil from "./pages/Perfil/Perfil";
 import CalculoServicos from "./pages/Calculo";
 import Loading from "./components/Loading";
+import Admin from "./pages/Calculo/Admin";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -66,6 +67,7 @@ function App() {
             <Route path="/servicos" element={<Servicos db={db} user={user}/>} />
             <Route path="/perfil" element={<Perfil db={db} user={user} />} />
             <Route path="/calculos" element={<CalculoServicos db={db} user={user} />} />
+            <Route path="/adm" element={<Admin db={db} user={user} />} />
             <Route path="/" element={<Navigate to="/home" replace />} />
             <Route path="*" element={<Navigate to="/home" replace />} />
           </>

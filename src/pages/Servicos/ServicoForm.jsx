@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
-import { serverTimestamp } from 'firebase/firestore';
+import { serverTimestamp, Timestamp } from 'firebase/firestore';
 import './ServicoForm.css'; 
 
 const TIPOS_SERVICO = [
   'Auxilio',
+  'Babyliss',
   'Botox',
   'Coloração',
   'Corte de Cabelo',
   'Escova',
+  'Escova Modelada',
   'Lavagem',
   'Mechas',
   'Preparo',
@@ -97,14 +99,27 @@ export default function ServicoForm({ cliente, onSubmit, onCancel, loading, serv
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    console.log('[📅] Data recebida no form:', servico.data);
+
     const tipos = servico.servicosSelecionados.map(s => s.tipo).join(', ');
     const valorTotal = servico.servicosSelecionados.reduce((soma, s) => soma + s.valor, 0);
 
+    let dataConvertida;
+    try {
+      const [ano, mes, dia] = servico.data.split('-').map(Number);
+      const dataJS = new Date(ano, mes - 1, dia, 0, 0, 0);
+      dataConvertida = Timestamp.fromDate(dataJS);
+    } catch (error) {
+      console.error('[❌] Erro ao converter data:', error, 'Data:', servico.data);
+      return;
+    }
+
     const servicoFormatado = {
       tipo: tipos,
-      tipos: servico.servicosSelecionados, // novo campo com lista de tipos + valores
+      tipos: servico.servicosSelecionados,
       valor: valorTotal,
-      data: `${servico.data}T00:00:00`,
+      data: dataConvertida,
       horario: servico.horario,
       observacoes: servico.observacoes,
       status: servico.status,

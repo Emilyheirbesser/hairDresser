@@ -4,6 +4,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import * as XLSX from 'xlsx';
 import { db } from '../../firebaseConfig';
 import { ArrowLeft } from '../../components/ArrowLeft';
+import { PeriodoMes } from './PeriodoMes';
 import "./calculoStyles.css";
 
 // Configuração inicial do estado
@@ -138,9 +139,15 @@ export default function CalculoServicos() {
   return (
     <div className="calculo-container">
       <div className="calculo-header">  
-        <h1 className="text-2xl font-bold mb-4">Cálculo de Serviços</h1>
+        <h1 className="text-2xl font-bold mb-4">Comissão</h1>
         <ArrowLeft />
-      </div>  
+      </div>
+
+      <PeriodoMes className="mb-6"
+      onShowCalculo={() => {
+        console.log("Mostrar calculo")
+      }}
+      />
 
       {erro && <div className="erro-message">{erro}</div>}
 

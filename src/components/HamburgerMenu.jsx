@@ -81,7 +81,7 @@ export function HamburgerMenu() {
                 className="menu-link flex items-center gap-2"
               >
                 <HiOutlineCalculator />
-                Calculo
+                Comissão
               </button>
             </li>
 
