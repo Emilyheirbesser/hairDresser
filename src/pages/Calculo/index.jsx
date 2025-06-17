@@ -1,6 +1,6 @@
 // src/pages/Calculo/index.jsx
 import { useReducer, useEffect } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, Timestamp } from 'firebase/firestore';
 import * as XLSX from 'xlsx';
 import { db } from '../../firebaseConfig';
 import { ArrowLeft } from '../../components/ArrowLeft';
@@ -51,8 +51,10 @@ export default function CalculoServicos() {
           return {
             id: doc.id,
             ...data,
-            data: data.data ? new Date(data.data) : null,
-            dataFormatada: data.data ? new Date(data.data).toLocaleDateString('pt-BR') : 'Sem data'
+            data: data.data?.toDate ? data.data.toDate() : (data.data ? new Date(data.data) : null),
+            dataFormatada: data.data?.toDate
+              ? data.data.toDate().toLocaleDateString('pt-BR')
+              : (data.data ? new Date(data.data).toLocaleDateString('pt-BR') : 'Sem data')
           };
         });
         dispatch({ type: 'SET_SERVICOS', payload: lista });
