@@ -40,9 +40,6 @@ If you are developing a production application, we recommend using TypeScript wi
 
 
 
-
-
-
       {/* {servicoSelecionado && (
         <div className="servico-popup">
           <div className="servico-popup-content">

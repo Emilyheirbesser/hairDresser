@@ -7,14 +7,24 @@ export default function ServicoPesquisa({ servicos }) {
   const [dataSelecionada, setDataSelecionada] = useState(null);
   const [servicoEmFoco, setServicoEmFoco] = useState(null);
 
+  const servicosComData = useMemo(() => {
+    return servicos.map(s => ({
+      ...s,
+      dataFormatada: s.data
+        ? new Date(s.data.seconds ? s.data.seconds * 1000 : s.data).toLocaleDateString('pt-BR')
+        : 'Data indefinida'
+    }));
+  }, [servicos]);
+
   const servicosDaData = useMemo(() => {
-    return servicos.filter(s => s.dataFormatada === dataSelecionada);
-  }, [dataSelecionada, servicos]);
+  return servicosComData.filter(s => s.dataFormatada === dataSelecionada);
+  }, [dataSelecionada, servicosComData]);
+
 
   const servicosFiltrados = useMemo(() => {
     const termo = busca.toLowerCase();
 
-    return servicos.filter(s => {
+    return servicosComData.filter(s => {
       const cliente = s.clienteNome?.toLowerCase() || '';
       const observacoes = s.observacoes?.toLowerCase() || '';
       const data = s.dataFormatada || '';
@@ -29,7 +39,7 @@ export default function ServicoPesquisa({ servicos }) {
         status.includes(termo)
       );
     });
-  }, [busca, servicos]);
+  }, [busca, servicosComData]);
 
   return (
     <div className="servico-search-container">
@@ -55,7 +65,7 @@ export default function ServicoPesquisa({ servicos }) {
               >
                 <div className="flex justify-between">
                   <span>{servico.clienteNome}</span>
-                  <span>{servico.dataFormatada || 'Data indefinida'}</span>
+                  <span>{servico.dataFormatada || 'Data indefinida'}</span> {/* teste */}
                 </div>
               </div>
             ))
@@ -156,7 +166,7 @@ export default function ServicoPesquisa({ servicos }) {
             </div>
 
             <div className="popup-body grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="servico-card">
+              <div className="popup-scroll-content">
                 <h3 className="servico-card-title">Outros Serviços</h3>
                 {servicosDaData.map(s => (
                   <div

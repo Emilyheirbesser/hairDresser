@@ -7,7 +7,6 @@ import { ArrowLeft } from '../../components/ArrowLeft';
 import { PeriodoMes } from './PeriodoMes';
 import "./calculoStyles.css";
 
-// Configuração inicial do estado
 const initialState = {
   dataInicio: '',
   dataFim: '',
@@ -18,17 +17,22 @@ const initialState = {
   carregando: false
 };
 
-// Função reducer para gerenciar o estado
+const ACTIONS = {
+  SET_FILTROS: 'SET_FILTROS',
+  SET_FILTRADOS: 'SET_FILTRADOS',
+  SET_ERRO: 'SET_ERRO'
+};
+
 function reducer(state, action) {
   switch (action.type) {
-    case 'SET_FILTROS':
+    case ACTIONS.SET_FILTROS:
       return { ...state, ...action.payload };
+    case ACTIONS.SET_FILTRADOS:
+      return { ...state, servicosFiltrados: action.payload, carregando: false }; // <- importante
+    case ACTIONS.SET_ERRO:
+      return { ...state, erro: action.payload, carregando: false }; // <- importante
     case 'SET_SERVICOS':
       return { ...state, servicos: action.payload, carregando: false };
-    case 'SET_FILTRADOS':
-      return { ...state, servicosFiltrados: action.payload };
-    case 'SET_ERRO':
-      return { ...state, erro: action.payload };
     case 'SET_CARREGANDO':
       return { ...state, carregando: action.payload };
     default:
@@ -36,11 +40,26 @@ function reducer(state, action) {
   }
 }
 
+
+const PERCENTUAIS = {
+  'Auxilio': 1,
+  'Lavagem': 1,
+  'Preparo': 0.5,
+  'Chapinha': 0.5,
+  'Babyliss': 0.5,
+  'Escova': 0.5,
+  'Tratamentos': 0.3,
+  'Coloração': 0.3,
+  'Tonalizante': 0.3,
+  'Progressiva': 0.4,
+  'Botox': 0.4,
+  'Mechas': 0.4
+};
+
 export default function CalculoServicos() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { dataInicio, dataFim, servicos, servicosFiltrados, statusFiltro, erro, carregando } = state;
 
-  // Buscar serviços do Firebase
   useEffect(() => {
     const fetchServicos = async () => {
       dispatch({ type: 'SET_CARREGANDO', payload: true });
@@ -67,7 +86,6 @@ export default function CalculoServicos() {
     fetchServicos();
   }, []);
 
-  // Calcular valor do serviço
   const calcularValorServico = (servico) => {
     if (servico.tipos?.length) {
       return servico.tipos.reduce((total, tipo) => {
@@ -79,7 +97,22 @@ export default function CalculoServicos() {
     return valor;
   };
 
-  // Filtrar serviços
+  const calcularValorComPercentual = (servico) => {
+    if (servico.tipos?.length) {
+      return servico.tipos.map(tipo => {
+        const percentual = PERCENTUAIS[tipo.tipo] ?? 0;
+        const valor = typeof tipo.valor === 'string' ? parseFloat(tipo.valor) : tipo.valor || 0;
+        return {
+          tipo: tipo.tipo,
+          valorOriginal: valor,
+          percentual,
+          valorComDesconto: valor * percentual
+        };
+      });
+    }
+    return [];
+  };
+
   const filtrarServicos = () => {
     if (!dataInicio || !dataFim) {
       dispatch({ type: 'SET_ERRO', payload: "Por favor, selecione ambas as datas" });
@@ -98,7 +131,6 @@ export default function CalculoServicos() {
 
     const filtrados = servicos.filter(s => {
       if (!s.data) return false;
-      
       const dataServico = s.data;
       const dentroDoPeriodo = dataServico >= inicio && dataServico <= fim;
       const statusCond = statusFiltro ? s.status === statusFiltro : true;
@@ -108,12 +140,10 @@ export default function CalculoServicos() {
     dispatch({ type: 'SET_FILTRADOS', payload: filtrados });
   };
 
-  // Calcular total
   const total = servicosFiltrados.reduce((soma, servico) => {
     return soma + calcularValorServico(servico);
   }, 0);
 
-  // Exportar para Excel
   const exportarExcel = () => {
     if (servicosFiltrados.length === 0) {
       dispatch({ type: 'SET_ERRO', payload: "Nenhum serviço para exportar" });
@@ -138,6 +168,11 @@ export default function CalculoServicos() {
     XLSX.writeFile(wb, 'relatorio-servicos.xlsx');
   };
 
+  const totalComissao = servicosFiltrados.reduce((total, servico) => {
+    const comissoes = calcularValorComPercentual(servico).reduce((soma, linha) => soma + linha.valorComDesconto, 0);
+    return total + comissoes;
+  }, 0);
+
   return (
     <div className="calculo-container">
       <div className="calculo-header">  
@@ -145,40 +180,22 @@ export default function CalculoServicos() {
         <ArrowLeft />
       </div>
 
-      <PeriodoMes className="mb-6"
-      onShowCalculo={() => {
-        console.log("Mostrar calculo")
-      }}
-      />
+      <PeriodoMes className="mb-6" onShowCalculo={() => console.log("Mostrar calculo")} />
 
       {erro && <div className="erro-message">{erro}</div>}
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div>
           <label className="block text-sm font-medium text-gray-700">Data Início</label>
-          <input
-            type="date"
-            value={dataInicio}
-            onChange={(e) => dispatch({ type: 'SET_FILTROS', payload: { dataInicio: e.target.value } })}
-            className="form-input w-full"
-          />
+          <input type="date" value={dataInicio} onChange={(e) => dispatch({ type: 'SET_FILTROS', payload: { dataInicio: e.target.value } })} className="form-input w-full" />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Data Fim</label>
-          <input
-            type="date"
-            value={dataFim}
-            onChange={(e) => dispatch({ type: 'SET_FILTROS', payload: { dataFim: e.target.value } })}
-            className="form-input w-full"
-          />
+          <input type="date" value={dataFim} onChange={(e) => dispatch({ type: 'SET_FILTROS', payload: { dataFim: e.target.value } })} className="form-input w-full" />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Status</label>
-          <select
-            value={statusFiltro}
-            onChange={(e) => dispatch({ type: 'SET_FILTROS', payload: { statusFiltro: e.target.value } })}
-            className="form-select w-full"
-          >
+          <select value={statusFiltro} onChange={(e) => dispatch({ type: 'SET_FILTROS', payload: { statusFiltro: e.target.value } })} className="form-select w-full">
             <option value="">Todos</option>
             <option value="pendente">Pendente</option>
             <option value="concluido">Concluído</option>
@@ -186,55 +203,130 @@ export default function CalculoServicos() {
           </select>
         </div>
         <div className="flex items-end">
-          <button
-            onClick={filtrarServicos}
-            className="btn-primary w-full"
-            disabled={carregando}
-          >
+          <button onClick={filtrarServicos} className="btn-primary w-full" disabled={carregando}>
             {carregando ? 'Carregando...' : 'Buscar'}
           </button>
         </div>
       </div>
 
-
       {carregando && <div className="loading-spinner">Carregando...</div>}
 
       {servicosFiltrados.length > 0 && (
         <>
-        <div className="card-total">
-          <h2 className="text-lg font-semibold mb-2">Total de serviços: {servicosFiltrados.length}</h2>
-          <p className="text-xl font-bold text-green-600">
-            Total: {total.toLocaleString('pt-BR', {
-              style: 'currency',
-              currency: 'BRL'
-            })}
-          </p>
-          <button
-            onClick={exportarExcel} 
-            className="mt-4 btn-secondary"
-            disabled={servicosFiltrados.length === 0 || carregando}
-          >
-            Exportar para Excel
-          </button>
-        </div>
+          <div className="card-total">
+            <h2 className="text-lg font-semibold mb-2">Total de serviços: {servicosFiltrados.length}</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <p className="text-sm text-gray-600">Total Bruto</p>
+                <p className="text-xl font-bold text-green-600">
+                  {total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Total Comissão</p>
+                <p className="text-xl font-bold text-blue-600">
+                  {totalComissao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                </p>
+              </div>
+              <div className="flex items-end">
+                <button 
+                  onClick={exportarExcel} 
+                  className="btn-secondary w-full" 
+                  disabled={servicosFiltrados.length === 0 || carregando}
+                >
+                  Exportar para Excel
+                </button>
+              </div>
+            </div>
+          </div>
 
-        <div className='card-calculo'>
-          <h3 className="text-md font-semibold mb-2">Serviços encontrados:</h3>
-          <ul>
-            {servicosFiltrados.map((s, index) => (
-              <li key={index} className="servico-item">
-                {s.clienteNome} - {s.dataFormatada} -{' '}
-                {calcularValorServico(s).toLocaleString('pt-BR', {
-                  style: 'currency',
-                  currency: 'BRL'
-                })}
-                {s.status && ` - Status: ${s.status}`}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </>
+          <ServicosList 
+            servicos={servicosFiltrados} 
+            calcularValorServico={calcularValorServico} 
+          />
+
+          <TabelaComissoes 
+            servicos={servicosFiltrados} 
+            calcularValorComPercentual={calcularValorComPercentual} 
+            total={total}
+            totalComissao={totalComissao}
+          />
+        </>
       )}
+    </div>
+  );
+}
+
+// Componentes filhos para melhor organização
+function ServicosList({ servicos, calcularValorServico }) {
+  return (
+    <div className='card-calculo'>
+      <h3 className="text-md font-semibold mb-2">Serviços encontrados:</h3>
+      <ul className="space-y-2">
+        {servicos.map((s) => (
+          <li key={s.id} className="servico-item">
+            {s.clienteNome} - {s.dataFormatada} - 
+            {calcularValorServico(s).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} 
+            {s.status && ` - Status: ${s.status}`}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function TabelaComissoes({ servicos, calcularValorComPercentual, total, totalComissao }) {
+  return (
+    <div className='card-calculo mt-6'>
+
+      <h3 className="text-md font-semibold mb-2">Tabela com Percentuais Aplicados:</h3>
+      <div className="overflow-x-auto">
+        <table className="min-w-full table-auto border">
+          <thead>
+            <tr className="bg-gray-200">
+              <th className="border px-4 py-2">Cliente</th>
+              <th className="border px-4 py-2">Data</th>
+              <th className="border px-4 py-2">Tipo</th>
+              <th className="border px-4 py-2">Valor</th>
+              <th className="border px-4 py-2">%</th>
+              <th className="border px-4 py-2">Comissão</th>
+            </tr>
+          </thead>
+          <tbody>
+            {servicos.flatMap((s) => 
+              calcularValorComPercentual(s).map((linha, i) => (
+                <tr key={`${s.id}-${i}`} className="text-sm hover:bg-gray-50">
+                  <td className="border px-2 py-1">{s.clienteNome}</td>
+                  <td className="border px-2 py-1">{s.dataFormatada}</td>
+                  <td className="border px-2 py-1">{linha.tipo}</td>
+                  <td className="border px-2 py-1 text-right">
+                    {linha.valorOriginal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                  </td>
+                  <td className="border px-2 py-1 text-right">{(linha.percentual * 100).toFixed(0)}%</td>
+                  <td className="border px-2 py-1 text-right">
+                    {linha.valorComDesconto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+      
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-100 p-4 rounded">
+        <div className="text-center">
+          <p className="text-sm text-gray-600">Total de Serviços</p>
+          <p className="font-bold">{servicos.length}</p>
+        </div>
+        <div className="text-center">
+          <p className="text-sm text-gray-600">Total Bruto</p>
+          <p className="font-bold">{total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+        </div>
+        <div className="text-center">
+          <p className="text-sm text-gray-600">Total Comissão</p>
+          <p className="font-bold">{totalComissao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+        </div>
+      </div>
     </div>
   );
 }

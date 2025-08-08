@@ -2,6 +2,11 @@ import { useState, useEffect } from 'react';
 import { serverTimestamp, Timestamp } from 'firebase/firestore';
 import './ServicoForm.css'; 
 
+// Auxílio e lavagem 100%/ 
+// preparo, chapinha, babyliss e escova 50%/ 
+// tratamentos, coloração e tonalizante 30%/ 
+// progressiva, botox e mechas 40%/
+
 const TIPOS_SERVICO = [
   'Auxilio',
   'Babyliss',
