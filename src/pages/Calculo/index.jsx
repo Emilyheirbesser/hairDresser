@@ -50,12 +50,14 @@ const PERCENTUAIS = {
   'Chapinha': 0.4,
   'Babyliss': 0.4,
   'Escova': 0.4,
+  'Escova Modelada': 0.4,
   'Tratamentos': 0.4,
   'Coloração': 0.4,
   'Tonalizante': 0.4,
   'Progressiva': 0.4,
   'Botox': 0.4,
-  'Mechas': 0.4
+  'Mechas': 0.4,
+  'Outros': 0.4
 };
 
 export default function CalculoServicos() {
