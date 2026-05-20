@@ -13,6 +13,7 @@ const TIPOS_SERVICO = [
   'Botox',
   'Coloração',
   'Corte de Cabelo',
+  'Corte',
   'Escova',
   'Escova Modelada',
   'Lavagem',
