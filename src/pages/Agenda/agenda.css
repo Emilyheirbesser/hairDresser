@@ -1,0 +1,292 @@
+.agenda-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+/* CARD */
+
+.agenda-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.72);
+
+  border-radius: 20px;
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.4);
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.06),
+    inset 0 1px 0 rgba(255,255,255,0.5);
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  margin-bottom: 16px;
+
+  position: relative;
+  overflow: hidden;
+}
+
+.agenda-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 35px rgba(0,0,0,0.10);
+}
+
+/* HEADER */
+
+.tituloMenu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.agenda-header {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  max-width: 900px;
+
+  background-color: white;
+  border-radius: 1.2rem;
+
+  padding: 1rem;
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.agenda-header h1 {
+  color: #0c2eb2;
+  font-size: 2.4rem;
+  font-weight: 800;
+
+}
+
+/* DATA */
+
+.agenda-data {
+  margin-left: auto;
+  padding: 0 0.2rem;
+  font-weight: 600;
+  color: #555;
+}
+
+/* TOPBAR */
+
+.agenda-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 1px;
+
+  min-height: 50px;
+  background: #f8faff;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+
+  margin-top: 15px;
+}
+
+/* BOTÃO HOJE */
+
+.agenda-hoje-btn {
+  background: linear-gradient(270deg, #010d3c, #4491ef);
+  background-size: 400% 400%;
+  animation: gradientMove 8s ease infinite;
+
+  border: none;
+  padding: 0.7rem 1rem;
+  border-radius: 0.8rem;
+
+  color: white;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.agenda-hoje-btn:hover {
+  transform: scale(1.03);
+}
+
+/* BLOCO DATA */
+
+.data-search {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  width: 210px;
+  gap: 4px;
+  background-color: #4491ef;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+/* INPUT */
+
+.agenda-date-input {
+  background-color: #144087;
+  color: white;
+
+  border: none;
+  outline: none;
+
+  height: 32px;
+
+  padding: 0 12px;
+
+  border-radius: 8px;
+}
+
+/* BOTÕES NAVEGAÇÃO */
+
+.agenda-nav-btn {
+  background-color: #0e216d;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.agenda-nav-btn:hover {
+  transform: scale(1.05);
+}
+
+/* GRID */
+
+.agenda-grid {
+  width: 90%;
+  max-width: 900px;
+  padding: 1rem;
+  margin-bottom: 15px;
+  border-radius: 20px;
+
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+
+/* FAIXA LATERAL (CORRETA AGORA) */
+
+.agenda-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: #cbd5e1;
+}
+
+.agenda-card.status-concluido::before {
+  background: #22c55e;
+}
+
+.agenda-card.status-pendente::before {
+  background: #f59e0b;
+}
+
+.agenda-card.status-cancelado::before {
+  background: #ef4444;
+}
+
+/* HORÁRIO */
+
+.agenda-hora {
+  min-width: 90px;
+
+  background: rgba(0,0,0,0.03);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 1.4rem;
+  font-weight: 700;
+
+  color: #3a3a3a;
+
+  border-right: 1px solid rgba(0,0,0,0.05);
+}
+
+/* INFO */
+
+.agenda-info {
+  flex: 1;
+
+  padding: 0.8rem 1rem;
+  padding-left: 1.6rem; /* espaço da barra lateral */
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* TOPO */
+
+.agenda-topo {
+  display: flex;
+  justify-content: center;
+}
+
+/* STATUS BADGE DINÂMICO */
+
+.agenda-status {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.agenda-status.status-concluido {
+  background: rgba(34,197,94,0.12);
+  color: #16a34a;
+}
+
+.agenda-status.status-pendente {
+  background: rgba(245,158,11,0.12);
+  color: #f59e0b;
+}
+
+.agenda-status.status-cancelado {
+  background: rgba(239,68,68,0.12);
+  color: #ef4444;
+}
+
+/* CLIENTE */
+
+.agenda-cliente {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #2f2f2f;
+}
+
+/* SERVIÇO */
+
+.agenda-servico {
+  font-size: 1rem;
+  color: #666;
+  text-align: center;
+}
+
+/* SEM AGENDAMENTO */
+
+.agenda-sem-agendamento {
+  text-align: center;
+  padding: 2rem;
+  color: #777;
+}

@@ -148,14 +148,16 @@ export default function Home() {
 
       <div className="home-card">
         <div className="home-header">
-          <HamburgerMenu />
-          <h1 className="home-title">Página Inicial</h1>
-          <FiHome className="figura-home" />
+          <div className="home-title">
+            <HamburgerMenu />
+            <h1 className="title">Página Inicial</h1>
+          </div>
+        <FiHome className="figura-home" />
         </div>
 
         <div className="home-content">
           <div className="welcome-section">
-            <h2 className="section-title">Bem-vindo, <strong>{userName}</strong></h2>
+            <h2 className="section-title">Bem-vindo(a), <strong>{userName}</strong></h2>
             <p className="section-text">Você está autenticado!</p>
           </div>
 

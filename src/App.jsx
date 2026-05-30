@@ -4,6 +4,7 @@ import { auth, db } from "./firebaseConfig";
 import { useState, useEffect } from "react";
 import Login from "./pages/Login";
 import Home from "./pages/Home/Home";
+import Agenda from "./pages/Agenda";
 import Clientes from "./pages/Clientes";
 import Servicos from "./pages/Servicos";
 import Perfil from "./pages/Perfil/Perfil";
@@ -64,6 +65,7 @@ function App() {
           <>
             <Route path="/home" element={<Home />} />
             <Route path="/clientes" element={<Clientes db={db} user={user} />} />
+            <Route path="/agenda" element={<Agenda db={db} user={user} />} />
             <Route path="/servicos" element={<Servicos db={db} user={user}/>} />
             <Route path="/perfil" element={<Perfil db={db} user={user} />} />
             <Route path="/calculos" element={<CalculoServicos db={db} user={user} />} />

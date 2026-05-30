@@ -57,6 +57,16 @@ export function HamburgerMenu() {
 
             <li className="menu-item">
               <button 
+                onClick={() => handleNavigation('/agenda')} 
+                className="menu-link flex items-center gap-2"
+              >
+                <FiHome />
+                Agenda
+              </button>
+            </li>
+
+            <li className="menu-item">
+              <button 
                 onClick={() => handleNavigation('/clientes')} 
                 className="menu-link flex items-center gap-2"
               >
