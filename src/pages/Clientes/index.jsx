@@ -138,9 +138,10 @@ export default function Clientes({ db, user }) {
     <div className="clients-container">
       <div className='card-clients'>
         <div className="clients-header">
+          <div className="titulo-menu">
           <HamburgerMenu />
           <h1 className="clients-title">Gerenciamento de Clientes</h1>
-          <ArrowLeft />
+          </div>
         </div>
         <div className="div-btn">
           <button
@@ -152,6 +153,7 @@ export default function Clientes({ db, user }) {
             >
             + Novo Cliente
           </button>
+          <ArrowLeft />
         </div>
         {error && (
           <div className="clients-error">
