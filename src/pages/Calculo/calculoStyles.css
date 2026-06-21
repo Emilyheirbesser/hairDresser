@@ -70,8 +70,8 @@ label {
   flex-direction: column;
   align-items: center;
   background: rgba(166, 176, 201, 0.7);
-  border-radius: 1rem;
-  padding: 1.5rem;
+  border-radius: 1.5rem;
+  padding: 1.2rem;
   box-shadow: 0 10px 25px -5px rgba(232, 214, 214, 0.2);
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -85,11 +85,11 @@ label {
 .card-total h2 {
   font-size: 1.2rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
   color: #fff;
 }
 
 .card-total p {
+  text-align: center;
   font-weight: bold;
   font-size: 2rem;
   border-radius: 0.5rem;
@@ -100,7 +100,7 @@ label {
   background: rgba(221, 235, 244, 0.95);
   border-radius: 1.5rem;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
+  padding: 1.5rem;
   width: 100%;
   max-width: 56rem;
   color: #0b0f52;
@@ -111,14 +111,15 @@ label {
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
 }
 
+
 h3 {
   text-align: center;
-  margin-bottom: 12px;
 
 }
 
-.items-end {
-  width: 100%;
+.total-items-end {
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
@@ -152,7 +153,6 @@ h3 {
 .btn-secondary {
   background: linear-gradient(270deg, #010d3c, #4491ef);
   color: #f8fafc;
-  margin-top: 0.5rem;
 }
 
 .btn-secondary:hover {
@@ -205,6 +205,40 @@ h3 {
   0% { opacity: 0.6; }
   50% { opacity: 1; }
   100% { opacity: 0.6; }
+}
+
+.titulo-tabela-porcentuais{
+  color: #0b0f52;
+}
+
+table  {
+  width: 100%;
+  min-width: 600px;
+  background-color: white;
+  border-radius: 25px;
+  padding: 1px;
+  text-align: center;
+}
+
+.overflow-x-auto{
+  border-radius: 25px;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.total-de-servicos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.text-total-servicos, .text-total-bruto, .text-total-comissao{
+  font-weight: bold;
+}
+
+.resultado {
+  text-align: center;
 }
 
 /* Responsividade */

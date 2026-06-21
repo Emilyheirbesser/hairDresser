@@ -218,7 +218,6 @@ export default function CalculoServicos() {
       {servicosFiltrados.length > 0 && (
         <>
           <div className="card-total">
-            <h2 className="text-lg font-semibold mb-2">Total de serviços: {servicosFiltrados.length}</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <p className="text-sm text-gray-600">Total Bruto</p>
@@ -232,7 +231,8 @@ export default function CalculoServicos() {
                   {totalComissao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                 </p>
               </div>
-              <div className="flex items-end">
+            <h2 className="text-lg font-semibold mb-2">Total de serviços: {servicosFiltrados.length}</h2>
+              <div className="total-items-end">
                 <button 
                   onClick={exportarExcel} 
                   className="btn-secondary w-full" 
@@ -283,7 +283,7 @@ function TabelaComissoes({ servicos, calcularValorComPercentual, total, totalCom
   return (
     <div className='card-calculo mt-6'>
 
-      <h3 className="text-md font-semibold mb-2">Tabela com Percentuais Aplicados:</h3>
+      <h3 className="titulo-tabela-porcentuais">Tabela com Percentuais Aplicados:</h3>
       <div className="overflow-x-auto">
         <table className="min-w-full table-auto border">
           <thead>
@@ -317,18 +317,18 @@ function TabelaComissoes({ servicos, calcularValorComPercentual, total, totalCom
         </table>
       </div>
       
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-100 p-4 rounded">
+      <div className="total-de-servicos">
         <div className="text-center">
-          <p className="text-sm text-gray-600">Total de Serviços</p>
-          <p className="font-bold">{servicos.length}</p>
+          <p className="text-total-bruto">Total Bruto</p>
+          <p className="resultado">{total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
         </div>
         <div className="text-center">
-          <p className="text-sm text-gray-600">Total Bruto</p>
-          <p className="font-bold">{total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+          <p className="text-total-comissao">Total Comissão</p>
+          <p className="resultado">{totalComissao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
         </div>
         <div className="text-center">
-          <p className="text-sm text-gray-600">Total Comissão</p>
-          <p className="font-bold">{totalComissao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+          <p className="text-total-servicos">Total de Serviços</p>
+          <p className="resultado">{servicos.length}</p>
         </div>
       </div>
     </div>
