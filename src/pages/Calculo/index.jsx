@@ -43,14 +43,14 @@ function reducer(state, action) {
 
 const PERCENTUAIS = {
   'Auxilio': 0.4,
-  'Corte': 0.4,
-  'Corte de Cabelo': 0.4,
+  'Corte': 0.5,
+  'Corte de Cabelo': 0.5,
   'Lavagem': 0.4,
   'Preparo': 0.4,
   'Chapinha': 0.4,
   'Babyliss': 0.4,
-  'Escova': 0.4,
-  'Escova Modelada': 0.4,
+  'Escova': 0.5,
+  'Escova Modelada': 0.5,
   'Tratamentos': 0.4,
   'Coloração': 0.4,
   'Tonalizante': 0.4,
