@@ -140,7 +140,7 @@ export default function Clientes({ db, user }) {
         <div className="clients-header">
           <div className="titulo-menu">
           <HamburgerMenu />
-          <h1 className="clients-title">Gerenciamento de Clientes</h1>
+          <h1 className="clients-title">Clientes</h1>
           </div>
         </div>
         <div className="div-btn">

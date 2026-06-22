@@ -47,9 +47,11 @@
 
 
 .clients-title {
-  align-items: center;
-  font-size: 2rem;
+  font-size: 2.4rem;
+  font-weight: 800;
   color: #0c2eb2;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
 }
 
 @keyframes gradientMove {
@@ -258,9 +260,9 @@
 
   
   .clients-title {
-    text-align: center;
+    /* text-align: center;
     font-size: 25px;
-    font-weight: 800;
+    font-weight: 800; */
   }
  
 }

@@ -248,8 +248,8 @@ export default function Servicos({ db }) {
       <div className="card-services">
         <div className="services-header">
           <HamburgerMenu />
-          <h1 className="services-title">Relatório de Atendimento</h1>
-          <ArrowLeft />
+          <h1 className="services-title">Atendimentos</h1>
+          {/* <ArrowLeft /> */}
         </div>
 
         {error && (

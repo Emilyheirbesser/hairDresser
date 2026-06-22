@@ -150,9 +150,9 @@ export default function Home() {
         <div className="home-header">
           <div className="home-title">
             <HamburgerMenu />
-            <h1 className="title">Página Inicial</h1>
+            <h1 className="title">Home</h1>
+            {/* <FiHome className="figura-home" /> */}
           </div>
-        <FiHome className="figura-home" />
         </div>
 
         <div className="home-content">
